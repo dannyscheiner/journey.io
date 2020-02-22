@@ -6,14 +6,13 @@ import { Switch, Route } from 'react-router-dom';
 
 import Homepage from './components/Homepage.jsx';
 
-// import './stylesheets/styles.css';
-
 const App = props => {
   return (
     <div className="router">
       <main>
         <Switch>
           <Route exact path="/" component={Homepage} />
+          {/* <Route exact path="/login" component={} /> */}
         </Switch>
       </main>
     </div>
