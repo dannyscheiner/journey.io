@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 3000;
+const artistRouter = require('./routes/artist.js');
 
 /**
  * handle parsing request body
@@ -11,19 +12,27 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//router: artist
-//routes
-// app.use('/artist', artistRouter);
+//  router: artist
+//  routes
+app.use('/artist', artistRouter);
 
-//middleware for grabbing and sending location to database
-app.post('/:artist', )
+//  middleware for grabbing and sending location to database
+app.post('/:artist');
+
+//  login route
+app.get('/login', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
+
+//  signup route
+app.get('/signup', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
 
 // respond with main app
 app.get('/', (req, res) => {
-  console.log('fuck everyone fuck everyone fucksdkfsjdkfjdslkfjsadlkfjasdklfjasdoklfojasdfijosdiofjdsiofjsdiofjsdiofjdsiofjdsiofjcsiodfjiodsfjiodsfjdsiofjdsiojfdsiojfoisdjfs')
-    res.status(200).sendFile(path.join(__dirname, '../index.html'))
-  
-}) 
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
 
 // catch-all route handler for any requests to an unknown route
 app.use((req, res) => res.sendStatus(404));
