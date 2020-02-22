@@ -11,12 +11,13 @@ const artistRouter = require('./routes/artist.js');
  */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //  router: artist
 //  routes
 app.use('/artist', artistRouter);
 
-//  middleware for grabbing and sending location to database
+//  middleware for grabbing and sending location to database from user inputs
 app.post('/:artist');
 
 //  login route
