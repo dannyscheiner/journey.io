@@ -4,23 +4,20 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-// import CompName from './components/taskLists.jsx';
+import Homepage from './components/Homepage.jsx';
 
-import './stylesheets/styles.css';
+// import './stylesheets/styles.css';
 
 const App = props => {
   return (
     <div className="router">
       <main>
         <Switch>
-          <Route
-            exact
-            path="/"
-            component={CompName}
-          />
+          <Route exact path="/" component={Homepage} />
+        </Switch>
       </main>
     </div>
   );
-}
+};
 
 export default App;
