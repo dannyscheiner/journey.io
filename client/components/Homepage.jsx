@@ -1,8 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import CreateCampaign from './CreateCampaign.jsx';
-import EditCampaign from './EditCampaign.jsx';
 
 class Homepage extends Component {
   constructor(props) {
@@ -14,8 +12,6 @@ class Homepage extends Component {
     return (
       <div className='homepage'>
         <h1>Homepage</h1>
-        <CreateCampaign />
-        <EditCampaign />
       </div>
     );
   }

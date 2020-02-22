@@ -3,7 +3,7 @@ import React, { useState, Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
-const createCampaign = (props) => {
+const EditCampaign = (props) => {
   const [spotifyWarning, setWarning] = useState(false);
   const warningText = spotifyWarning ? 'Please include a link to Spotify' : '';
   function createCampaign(e) {
@@ -14,7 +14,7 @@ const createCampaign = (props) => {
       return;
     }
     const campaignData = {
-      artist_id: props.artist_id,
+      artist_id: 1,
       name: e.target.campaignName.value,
       blurb: e.target.bioInput.value,
       video: e.target.promoVideo.value,
@@ -94,4 +94,4 @@ const createCampaign = (props) => {
   );
 };
 
-export default editCampaign;
+export default EditCampaign;
