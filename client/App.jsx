@@ -29,10 +29,13 @@ class App extends Component {
       <div className='router'>
         <main>
           <Switch>
-            <Route exact path='/' component={CreateCampaign} />
-            <Route exact path='/login' component={Login} />} />
-            <Route exact path='/createcampaign' component={CreateCampaign} />
-            <Route exact path='/signup' component={Signup} />
+            <Route exact path="/" component={Homepage} />
+            <Route
+              exact
+              path="/login"
+              render={props => <Login {...props} updateState={this.updateId} />}
+            />
+            <Route exact path="/signup" component={Signup} />
           </Switch>
         </main>
       </div>

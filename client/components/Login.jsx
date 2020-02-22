@@ -1,58 +1,40 @@
 /* eslint-disable react/no-array-index-key */
-import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 
-import { Form, Button } from "react-bootstrap";
+import { Form, Button } from 'react-bootstrap';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loginVerify: false,
-      loginError: "",
-      username: "",
-      password: ""
+      loginError: '',
     };
 
-    this.setUsername = this.setUsername.bind(this);
-    this.setPw = this.setPw.bind(this);
     this.sendLogin = this.sendLogin.bind(this);
-  }
-
-  setUsername(e) {
-    this.setState({ username: e.target.value });
-  }
-
-  setPw(e) {
-    this.setState({ password: e.target.value });
   }
 
   sendLogin(e) {
     e.preventDefault();
-    const body = {
-      username: this.state.username,
-      password: this.state.password
-    };
-    fetch("/artist/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+
+    fetch('/artist/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: e.target.loginUsernameInput.value,
+        password: e.target.loginPasswordInput.value,
+      }),
     })
+      .then(data => data.json())
       .then(res => {
-        if (res.status === 200) {
-          this.props.updateId(res.text().id);
-          this.setState({ loginVerify: true, loginError: "" });
-        }
-        if (res.status === 400) {
-          this.setState({
-            loginError: "Invalid username/password",
-            username: "",
-            password: ""
-          });
-        }
+        this.props.updateState(res);
+        this.setState({ loginVerify: true, loginError: '' });
       })
       .catch(err => {
-        console.log("Login ERROR: ", err);
+        this.setState({
+          loginError: 'Invalid username/password',
+        });
       });
   }
 
@@ -61,30 +43,22 @@ class Login extends Component {
       return <Redirect to="/" />;
     }
     return (
-      <Form className="login">
+      <Form className="login" onSubmit={this.sendLogin}>
         <Form.Group controlId="loginUsernameInput">
           <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            onChange={this.setUsername}
-            value={this.state.username}
-          />
+          <Form.Control type="text" />
         </Form.Group>
         <Form.Group controlId="loginPasswordInput">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            onChange={this.setPw}
-            value={this.state.password}
-          />
+          <Form.Control type="password" />
         </Form.Group>
         <p>{this.state.loginError}</p>
         <div className="buttons">
-          <Button variant="info" onClick={this.sendLogin}>
+          <Button type="submit" variant="info">
             Login
           </Button>
-          <Button variant="outline-info">
-            <Link className="signupLink" to={"/signup"}>
+          <Button type="submit" variant="outline-info">
+            <Link className="signupLink" to={'/signup'}>
               Sign Up
             </Link>
           </Button>
