@@ -1,13 +1,25 @@
+const moment = require('moment-timezone');
 const db = require('../models/dataModels.js');
 
 const artistController = {};
-const signupQuery = 'INSERT INTO artist (username, password) VALUES ($1, $2)';
+const signupQuery =
+  'INSERT INTO artist (name, username, password, location, join_date) VALUES ($1, $2, $3, $4, $5)';
 const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
 const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
 const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
+const today = moment(new Date())
+  .tz('America/Los_Angeles')
+  .format()
+  .slice(0, 10);
 
 artistController.createUser = (req, res, next) => {
-  db.query(signupQuery, [req.body.username, req.body.password])
+  db.query(signupQuery, [
+    req.body.name,
+    req.body.username,
+    req.body.password,
+    req.body.location,
+    today,
+  ])
     .then(res => {
       return next();
     })

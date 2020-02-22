@@ -11,7 +11,7 @@ class Login extends Component {
       loginVerify: false,
       loginError: '',
       username: '',
-      pw: '',
+      password: '',
     };
 
     this.setUsername = this.setUsername.bind(this);
@@ -24,7 +24,7 @@ class Login extends Component {
   }
 
   setPw(e) {
-    this.setState({ pw: e.target.value });
+    this.setState({ password: e.target.value });
   }
 
   sendLogin(e) {
@@ -34,11 +34,12 @@ class Login extends Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: this.state.username,
-        pw: this.state.pw,
+        password: this.state.password,
       }),
     })
       .then(res => {
         if (res.status === 200) {
+          this.props.updateId(res.text().id);
           this.setState({ loginVerify: true, loginError: '' });
         }
         if (res.status === 400) {
@@ -77,7 +78,7 @@ class Login extends Component {
             name="pw"
             type="password"
             onChange={this.setPw}
-            value={this.state.pw}
+            value={this.state.password}
           />
         </Form.Group>
         <p>{this.state.loginError}</p>

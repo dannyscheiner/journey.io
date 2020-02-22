@@ -10,7 +10,7 @@ router.post(
   artistController.loginUser,
   artistController.setCookie,
   (req, res) => {
-    return res.sendStatus(200);
+    return res.status(200).json({ id: res.locals.userId });
   },
 );
 
@@ -19,7 +19,7 @@ router.post(
   artistController.createUser,
   artistController.setCookie,
   (req, res) => {
-    return res.sendStatus(200);
+    return res.status(200).json({ id: res.locals.userId });
   },
 );
 module.exports = router;

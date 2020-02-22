@@ -12,16 +12,28 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: '',
       endpoint: '',
     };
+
+    this.updateId = this.updateId.bind(this);
   }
+
+  updateId(artistId) {
+    this.setState({ id: artistId });
+  }
+
   render() {
     return (
       <div className="router">
         <main>
           <Switch>
             <Route exact path="/" component={Homepage} />
-            <Route exact path="/login" component={Login} />
+            <Route
+              exact
+              path="/login"
+              component={<Login updateState={this.updateId} />}
+            />
             <Route exact path="/signup" component={Signup} />
           </Switch>
         </main>

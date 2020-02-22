@@ -8,13 +8,21 @@ class Signup extends Component {
     super(props);
     this.state = {
       signupVerify: false,
-      usernameUnavailable: false,
+      name: '',
       username: '',
       password: '',
+      location: '',
     };
+
+    this.setName = this.setName.bind(this);
     this.setUsername = this.setUsername.bind(this);
     this.setPw = this.setPw.bind(this);
+    this.setLocation = this.setLocation.bind(this);
     this.createUser = this.createUser.bind(this);
+  }
+
+  setName(e) {
+    this.setState({ name: e.target.value });
   }
 
   setUsername(e) {
@@ -22,7 +30,11 @@ class Signup extends Component {
   }
 
   setPw(e) {
-    this.setState({ pw: e.target.value });
+    this.setState({ password: e.target.value });
+  }
+
+  setLocation(e) {
+    this.setState({ location: e.target.value });
   }
 
   createUser(e) {
@@ -31,8 +43,10 @@ class Signup extends Component {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        name: this.state.name,
         username: this.state.username,
-        pw: this.state.pw,
+        password: this.state.password,
+        location: this.state.location,
       }),
     })
       .then(res => {
@@ -51,11 +65,17 @@ class Signup extends Component {
     }
     return (
       <Form className="signup">
+        <Form.Group controlId="createNameInput">
+          <Form.Label>Artist Name</Form.Label>
+          <Form.Control
+            type="text"
+            onChange={this.setUsername}
+            value={this.state.name}
+          />
+        </Form.Group>
         <Form.Group controlId="createUsernameInput">
           <Form.Label>Username</Form.Label>
           <Form.Control
-            id="user"
-            name="username"
             type="text"
             onChange={this.setUsername}
             value={this.state.username}
@@ -69,11 +89,20 @@ class Signup extends Component {
             type="password"
             placeholder="Create a password"
             onChange={this.setPw}
-            value={this.state.pw}
+            value={this.state.password}
           />
         </Form.Group>
-        <p>{this.state.loginError}</p>
-        <Button variant="info" onClick={this.createUser}></Button>
+        <Form.Group controlId="createLocationInput">
+          <Form.Label>Location</Form.Label>
+          <Form.Control
+            type="text"
+            onChange={this.setUsername}
+            value={this.state.username}
+          />
+        </Form.Group>
+        <Button variant="info" onClick={this.createUser}>
+          Sign Up
+        </Button>
       </Form>
     );
   }
