@@ -1,10 +1,12 @@
-const db = require('../models/dataModels.js');
+const db = require("../models/dataModels.js");
 
 const artistController = {};
-const signupQuery = 'INSERT INTO artist (username, password) VALUES ($1, $2)';
-const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
-const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
-const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
+const signupQuery = "INSERT INTO artist (username, password) VALUES ($1, $2)";
+const loginQuery = "SELECT password, id FROM artist WHERE username=$1";
+const updateCookie = "UPDATE artist SET cookie=$1 WHERE id=$2";
+const verifyCookie = "SELECT cookie FROM artist WHERE id=$1";
+const createCampaignQuery =
+  "INSERT INTO campaign (artist_id, name, active, blurb, video, links, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
 
 artistController.createUser = (req, res, next) => {
   db.query(signupQuery, [req.body.username, req.body.password])
@@ -13,9 +15,9 @@ artistController.createUser = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.createUser',
+        log: "Error occured in userController.createUser",
         status: 400,
-        message: { err: err.detail },
+        message: { err: err.detail }
       });
     });
 };
@@ -27,22 +29,22 @@ artistController.loginUser = (req, res, next) => {
         res.locals.userId = dbPw.rows[0].id;
         return next();
       } else {
-        res.status(400).send('Invalid username/password');
+        res.status(400).send("Invalid username/password");
       }
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.loginUser',
+        log: "Error occured in userController.loginUser",
         status: 400,
-        message: { err: err },
+        message: { err: err }
       });
     });
 };
 
 artistController.setCookie = (req, res, next) => {
   const random = Math.floor(Math.random() * 999).toString();
-  res.cookie('toDoI', res.locals.userId, { httpOnly: true });
-  res.cookie('cookie', random, { httpOnly: true });
+  res.cookie("toDoI", res.locals.userId, { httpOnly: true });
+  res.cookie("cookie", random, { httpOnly: true });
   db.query(updateCookie, [random, res.locals.userId]).then(res => {
     return next();
   });
@@ -62,6 +64,21 @@ artistController.verifyCookie = (req, res, next) => {
       return next();
     }
   });
+};
+
+artistController.createCampaign = (req, res, next) => {
+  const {
+    artist_id,
+    name,
+    active,
+    blurb,
+    video,
+    links,
+    facebook,
+    twitter,
+    instagram
+  } = req.body;
+  const params = [];
 };
 
 module.exports = artistController;
