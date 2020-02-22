@@ -6,12 +6,12 @@ import { Switch, Route } from 'react-router-dom';
 
 import Homepage from './components/Homepage.jsx';
 
-const App = props => {
+const App = (props) => {
   return (
-    <div className="router">
+    <div className='router'>
       <main>
         <Switch>
-          <Route exact path="/" component={Homepage} />
+          <Route exact path='/' component={Homepage} />
           {/* <Route exact path="/login" component={} /> */}
         </Switch>
       </main>
