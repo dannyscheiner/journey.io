@@ -1,17 +1,17 @@
 /* eslint-disable react/no-array-index-key */
-import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
 
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button } from "react-bootstrap";
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loginVerify: false,
-      loginError: '',
-      username: '',
-      pw: '',
+      loginError: "",
+      username: "",
+      password: ""
     };
 
     this.setUsername = this.setUsername.bind(this);
@@ -24,33 +24,35 @@ class Login extends Component {
   }
 
   setPw(e) {
-    this.setState({ pw: e.target.value });
+    this.setState({ password: e.target.value });
   }
 
   sendLogin(e) {
     e.preventDefault();
-    fetch('/artist/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: this.state.username,
-        pw: this.state.pw,
-      }),
+    const body = {
+      username: this.state.username,
+      password: this.state.password
+    };
+    fetch("/artist/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
     })
       .then(res => {
         if (res.status === 200) {
-          this.setState({ loginVerify: true, loginError: '' });
+          this.props.updateId(res.text().id);
+          this.setState({ loginVerify: true, loginError: "" });
         }
         if (res.status === 400) {
           this.setState({
-            loginError: 'Invalid username/password',
-            username: '',
-            password: '',
+            loginError: "Invalid username/password",
+            username: "",
+            password: ""
           });
         }
       })
       .catch(err => {
-        console.log('Login ERROR: ', err);
+        console.log("Login ERROR: ", err);
       });
   }
 
@@ -63,8 +65,6 @@ class Login extends Component {
         <Form.Group controlId="loginUsernameInput">
           <Form.Label>Username</Form.Label>
           <Form.Control
-            id="user"
-            name="username"
             type="text"
             onChange={this.setUsername}
             value={this.state.username}
@@ -73,11 +73,9 @@ class Login extends Component {
         <Form.Group controlId="loginPasswordInput">
           <Form.Label>Password</Form.Label>
           <Form.Control
-            id="pw"
-            name="pw"
             type="password"
             onChange={this.setPw}
-            value={this.state.pw}
+            value={this.state.password}
           />
         </Form.Group>
         <p>{this.state.loginError}</p>
@@ -86,7 +84,7 @@ class Login extends Component {
             Login
           </Button>
           <Button variant="outline-info">
-            <Link className="signupLink" to={'/signup'}>
+            <Link className="signupLink" to={"/signup"}>
               Sign Up
             </Link>
           </Button>
