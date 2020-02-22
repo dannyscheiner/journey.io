@@ -1,55 +1,30 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import { Form, Button } from "react-bootstrap";
+import { Form, Button } from 'react-bootstrap';
 
 class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
       signupVerify: false,
-      name: "",
-      username: "",
-      password: "",
-      location: ""
     };
 
-    // this.setName = this.setName.bind(this);
-    // this.setUsername = this.setUsername.bind(this);
-    // this.setPw = this.setPw.bind(this);
-    // this.setLocation = this.setLocation.bind(this);
     this.createUser = this.createUser.bind(this);
   }
 
-  // setName(e) {
-  //   this.setState({ name: e.target.value });
-  // }
-
-  // setUsername(e) {
-  //   this.setState({ username: e.target.value });
-  // }
-
-  // setPw(e) {
-  //   this.setState({ password: e.target.value });
-  // }
-
-  // setLocation(e) {
-  //   this.setState({ location: e.target.value });
-  // }
-
   createUser(e) {
     e.preventDefault();
-    const body = {
-      name: e.target.createNameInput,
-      username: e.target.createUsernameInput,
-      password: e.target.createPasswordInput,
-      location: e.target.createLocationInput
-    };
 
-    fetch("/artist/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+    fetch('/artist/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: e.target.createNameInput.value,
+        username: e.target.createUsernameInput.value,
+        password: e.target.createPasswordInput.value,
+        location: e.target.createLocationInput.value,
+      }),
     })
       .then(res => {
         if (res.status === 200) {
@@ -57,7 +32,7 @@ class Signup extends Component {
         }
       })
       .catch(err => {
-        console.log("Login ERROR: ", err);
+        console.log('Login ERROR: ', err);
       });
   }
 
@@ -69,28 +44,15 @@ class Signup extends Component {
       <Form className="signup" onSubmit={this.createUser}>
         <Form.Group controlId="createNameInput">
           <Form.Label>Artist Name</Form.Label>
-          <Form.Control
-            type="text"
-            // onChange={this.setUsername}
-            // value={this.state.name}
-          />
+          <Form.Control type="text" />
         </Form.Group>
         <Form.Group controlId="createUsernameInput">
           <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            // onChange={this.setUsername}
-            // value={this.state.username}
-          />
+          <Form.Control type="text" />
         </Form.Group>
         <Form.Group controlId="createPasswordInput">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Create a password"
-            // onChange={this.setPw}
-            // value={this.state.password}
-          />
+          <Form.Control type="password" placeholder="Create a password" />
         </Form.Group>
         <Form.Group controlId="createLocationInput">
           <Form.Label>Location</Form.Label>

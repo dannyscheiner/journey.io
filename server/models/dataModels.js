@@ -1,8 +1,9 @@
-const { Pool } = require("pg");
-const PG_URL = require("./PG_URL");
+const { Pool } = require('pg');
+const PG_URL =
+  'postgres://sczubojb:6ZbHd1lviszjmLaofHMe35XS1-3e6qzH@rajje.db.elephantsql.com:5432/sczubojb';
 
 const pool = new Pool({
-  connectionString: PG_URL
+  connectionString: PG_URL,
 });
 
 //TABLE USERS
@@ -25,7 +26,7 @@ const pool = new Pool({
 
 module.exports = {
   query: (text, params, cb) => {
-    console.log("executed query", text);
+    console.log('executed query', text);
     return pool.query(text, params, cb);
-  }
+  },
 };

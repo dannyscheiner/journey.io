@@ -32,7 +32,7 @@ class App extends Component {
             <Route
               exact
               path="/login"
-              component={<Login updateState={this.updateId} />}
+              render={props => <Login {...props} updateState={this.updateId} />}
             />
             <Route exact path="/signup" component={Signup} />
           </Switch>

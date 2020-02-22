@@ -1,18 +1,18 @@
-const db = require("../models/dataModels.js");
-const moment = require("moment-timezone");
+const db = require('../models/dataModels.js');
+const moment = require('moment-timezone');
 
 const artistController = {};
 const signupQuery =
-  "INSERT INTO artist (name, username, password, location, join_date) VALUES ($1, $2, $3, $4, $5)";
-const loginQuery = "SELECT password, id FROM artist WHERE username=$1";
-const updateCookie = "UPDATE artist SET cookie=$1 WHERE id=$2";
-const verifyCookie = "SELECT cookie FROM artist WHERE id=$1";
+  'INSERT INTO artist (name, username, password, location, join_date) VALUES ($1, $2, $3, $4, $5) RETURNING id';
+const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
+const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
+const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
 const today = moment(new Date())
-  .tz("America/Los_Angeles")
+  .tz('America/Los_Angeles')
   .format()
   .slice(0, 10);
 const createCampaignQuery =
-  "INSERT INTO campaign (artist_id, name, active, bio, video, links, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
+  'INSERT INTO campaign (artist_id, name, active, bio, video, links, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)';
 
 artistController.createUser = (req, res, next) => {
   db.query(signupQuery, [
@@ -20,16 +20,17 @@ artistController.createUser = (req, res, next) => {
     req.body.username,
     req.body.password,
     req.body.location,
-    today
+    today,
   ])
-    .then(res => {
+    .then(data => {
+      res.locals.userId = data.rows[0].id;
       return next();
     })
     .catch(err => {
       return next({
-        log: "Error occured in userController.createUser",
+        log: 'Error occured in userController.createUser',
         status: 400,
-        message: { err: err.detail }
+        message: { err: err.detail },
       });
     });
 };
@@ -41,25 +42,33 @@ artistController.loginUser = (req, res, next) => {
         res.locals.userId = dbPw.rows[0].id;
         return next();
       } else {
-        res.status(400).send("Invalid username/password");
+        res.status(400).send('Invalid username/password');
       }
     })
     .catch(err => {
       return next({
-        log: "Error occured in userController.loginUser",
+        log: 'Error occured in userController.loginUser',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
 
 artistController.setCookie = (req, res, next) => {
   const random = Math.floor(Math.random() * 999).toString();
-  res.cookie("toDoI", res.locals.userId, { httpOnly: true });
-  res.cookie("cookie", random, { httpOnly: true });
-  db.query(updateCookie, [random, res.locals.userId]).then(res => {
-    return next();
-  });
+  res.cookie('artistI', res.locals.userId, { httpOnly: true });
+  res.cookie('cookie', random, { httpOnly: true });
+  db.query(updateCookie, [random, res.locals.userId])
+    .then(res => {
+      return next();
+    })
+    .catch(err => {
+      return next({
+        log: 'Error occured in artistController.setCookie',
+        status: 400,
+        message: { err: err },
+      });
+    });
 };
 
 artistController.verifyCookie = (req, res, next) => {
@@ -88,7 +97,7 @@ artistController.createCampaign = (req, res, next) => {
     req.body.links,
     req.body.facebook,
     req.body.twitter,
-    req.body.instagram
+    req.body.instagram,
   ];
 
   db.query(createCampaignQuery, params)
@@ -97,9 +106,9 @@ artistController.createCampaign = (req, res, next) => {
     })
     .catch(error => {
       return next({
-        log: "Error occured in userController.createCampaign",
+        log: 'Error occured in userController.createCampaign',
         status: 400,
-        message: { err: err.detail }
+        message: { err: err.detail },
       });
     });
 };
