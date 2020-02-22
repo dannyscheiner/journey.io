@@ -13,15 +13,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //router: artist
 //routes
-app.use('/artist', artistRouter);
+// app.use('/artist', artistRouter);
 
 //middleware for grabbing and sending location to database
 app.post('/:artist', )
 
 // respond with main app
 app.get('/', (req, res) => {
+  console.log('fuck everyone fuck everyone fucksdkfsjdkfjdslkfjsadlkfjasdklfjasdoklfojasdfijosdiofjdsiofjsdiofjsdiofjdsiofjdsiofjcsiodfjiodsfjiodsfjdsiofjdsiojfdsiojfoisdjfs')
     res.status(200).sendFile(path.join(__dirname, '../index.html'))
-
+  
 }) 
 
 // catch-all route handler for any requests to an unknown route
