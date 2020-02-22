@@ -24,6 +24,11 @@ app.get('/login', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
+//  signup route
+app.get('/signup', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
+
 // respond with main app
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../index.html'));
