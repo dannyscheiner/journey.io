@@ -12,7 +12,7 @@ const today = moment(new Date())
   .format()
   .slice(0, 10);
 const createCampaignQuery =
-  'INSERT INTO campaign (artist_id, name, active, bio, video, links, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)';
+  "INSERT INTO campaign (artist_id, name, active, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
 
 artistController.createUser = (req, res, next) => {
   db.query(signupQuery, [
@@ -87,17 +87,22 @@ artistController.verifyCookie = (req, res, next) => {
   });
 };
 
+// (artist_id, name, active, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio )
+
 artistController.createCampaign = (req, res, next) => {
   const params = [
     req.body.artist_id,
     req.body.name,
-    req.body.active,
-    req.body.blurb,
+    true, // campaign defaults to active
     req.body.video,
-    req.body.links,
     req.body.facebook,
     req.body.twitter,
     req.body.instagram,
+    req.body.youtube,
+    req.body.soundcloud,
+    req.body.tiktok,
+    req.body.spotify,
+    req.body.bio
   ];
 
   db.query(createCampaignQuery, params)
@@ -108,7 +113,7 @@ artistController.createCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in userController.createCampaign',
         status: 400,
-        message: { err: err.detail },
+        message: { error: error.detail }
       });
     });
 };
