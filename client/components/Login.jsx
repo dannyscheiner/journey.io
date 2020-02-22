@@ -40,7 +40,7 @@ class Login extends Component {
 
   render() {
     if (this.state.loginVerify) {
-      return <Redirect to="/" />;
+      return <Redirect to="/createcampaign" />;
     }
     return (
       <Form className="login" onSubmit={this.sendLogin}>

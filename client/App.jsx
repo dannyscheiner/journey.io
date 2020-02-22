@@ -36,9 +36,21 @@ class App extends Component {
               path="/login"
               render={props => <Login {...props} updateState={this.updateId} />}
             />
-            <Route exact path="/signup" component={Signup} />
+            <Route
+              exact
+              path="/signup"
+              render={props => (
+                <Signup {...props} updateState={this.updateId} />
+              )}
+            />
             <Route exact path="/campaign" component={Campaign} />
-            <Route exact path="/createcampaign" component={CreateCampaign} />
+            <Route
+              exact
+              path="/createcampaign"
+              render={props => (
+                <CreateCampaign {...props} artistId={this.state.id} />
+              )}
+            />
           </Switch>
         </main>
       </div>
