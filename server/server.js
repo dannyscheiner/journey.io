@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 3000;
 const artistRouter = require('./routes/artist.js');
-const userRouter = require('./routes/user.js');
 
 // handle parsing request body
 app.use(bodyParser.json());

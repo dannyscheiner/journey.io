@@ -26,10 +26,10 @@ class Signup extends Component {
         location: e.target.createLocationInput.value,
       }),
     })
+      .then(data => data.json())
       .then(res => {
-        if (res.status === 200) {
-          this.setState({ signupVerify: true });
-        }
+        this.props.updateState(res);
+        this.setState({ signupVerify: true });
       })
       .catch(err => {
         console.log('Login ERROR: ', err);
