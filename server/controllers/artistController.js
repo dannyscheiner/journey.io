@@ -14,9 +14,9 @@ const createCampaignQuery =
 const retrieveCampaign =
   "SELECT * FROM campaign WHERE id = $1 AND active = true";
 const updateCampaign =
-  "UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11) WHERE artist_id = $1 AND active = true";
+  "UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11) WHERE id = $1 AND active = true";
 const getDashboardQuery =
-  'SELECT name, active FROM campaign WHERE artist_id=$1';
+  "SELECT name, active FROM campaign WHERE artist_id=$1";
 // used for query data populating
 
 const today = moment(new Date())
@@ -111,7 +111,7 @@ artistController.createCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio,
+    req.body.bio
   ];
 
   db.query(createCampaignQuery, params)
@@ -143,7 +143,36 @@ artistController.editCampaign = (req, res, next) => {
       return next({
         log: "Error occured in userController.createCampaign",
         status: 400,
-        message: { error: error.detail },
+        message: { error: error.detail }
+      });
+    });
+};
+
+artistController.updateCampaign = (req, res, next) => {
+  //  FROM QUERY: name = $2, video = $3, facebook = $4, twitter = $5,
+  //instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10,
+  // bio = $11) WHERE artist_id = $1 AND active = true";
+  const params = [
+    req.body.id, // campaign_id passed in from fetch post, passed down thru state
+    req.body.name,
+    req.body.video,
+    req.body.facebook,
+    req.body.twitter,
+    req.body.instagram,
+    req.body.youtube,
+    req.body.soundcloud,
+    req.body.tiktok,
+    req.body.spotify,
+    req.body.bio
+  ];
+
+  db.query(updateCampaign, params)
+    .then(result => next()) // result from query isn't needed when updating
+    .catch(e => {
+      return next({
+        log: "Error occured in userController.createCampaign",
+        status: 400,
+        message: { error: error.detail }
       });
     });
 };
@@ -156,9 +185,9 @@ artistController.getDashboard = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in artistController.getDashboard',
+        log: "Error occured in artistController.getDashboard",
         status: 400,
-        message: { err: err },
+        message: { err: err }
       });
     });
 };
