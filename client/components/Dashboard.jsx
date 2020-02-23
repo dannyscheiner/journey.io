@@ -5,6 +5,7 @@ import { Jumbotron } from 'react-bootstrap';
 
 import ActiveCard from './ActiveCard';
 import InactiveCard from './InactiveCard';
+import EditCampaign from './EditCampaign';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -12,9 +13,14 @@ class Dashboard extends Component {
     this.state = {
       fetchedCampaigns: false,
       campaigns: [],
+      currentCampaign: '',
+      showEditModal: false
     };
+    this.assignCurrentCampaign = this.assignCurrentCampaign.bind(this);
   }
-
+  assignCurrentCampaign(id) {
+    this.setState({ currentCampaign: id, showEditModal: true });
+  }
   componentDidMount() {
     fetch('/artist/dashboard/' + this.props.artistId)
       .then(data => data.json())
@@ -28,11 +34,26 @@ class Dashboard extends Component {
 
   render() {
     const { campaigns } = this.state;
+    console.log(this.state.showEditModal, this.state.currentCampaign);
     const cards = campaigns.map((campaign, i) => {
       if (campaign.active) {
-        return <ActiveCard key={i} name={campaign.name} />;
+        return (
+          <ActiveCard
+            key={campaign.id}
+            id={campaign.id}
+            name={campaign.name}
+            onClick={this.assignCurrentCampaign}
+          />
+        );
       } else {
-        return <InactiveCard key={i} name={campaign.name} />;
+        return (
+          <InactiveCard
+            key={campaign.id}
+            id={campaign.id}
+            name={campaign.name}
+            onClick={this.assignCurrentCampaign}
+          />
+        );
       }
     });
 
@@ -41,7 +62,7 @@ class Dashboard extends Component {
         <Jumbotron fluid>
           <h1>My Dashboard</h1>
         </Jumbotron>
-        <div>{cards}</div>
+        <div className="d-flex row">{cards}</div>
       </div>
     );
   }

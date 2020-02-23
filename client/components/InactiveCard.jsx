@@ -1,22 +1,21 @@
 import React from 'react';
 
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 
-const InactiveCard = ({ name }) => {
+const InactiveCard = ({ name, id, onClick }) => {
+  console.log(id);
   return (
-    <>
-      <Card>
-        <Card.Body>
-          <Card.Title>{name}</Card.Title>
-          <Card.Subtitle className="inactiveCard">Inactive</Card.Subtitle>
-        </Card.Body>
-      </Card>
-      <div className="buttons">
-        <Button type="submit" variant="outline-info">
-          View Metrics
-        </Button>
-      </div>
-    </>
+    <Card style={{ width: '20rem' }}>
+      <Card.Body>
+        <Card.Title>{name}</Card.Title>
+        <Card.Subtitle className="inactiveCard">Inactive</Card.Subtitle>
+        <div className="buttons">
+          <Button type="submit" variant="outline-info">
+            View Metrics
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
   );
 };
 
