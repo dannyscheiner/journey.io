@@ -2,45 +2,54 @@
 import React, { useState, Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+import { useEffect } from 'react';
 
 const EditCampaign = (props) => {
   const [spotifyWarning, setWarning] = useState(false);
   const warningText = spotifyWarning ? 'Please include a link to Spotify' : '';
-  function createCampaign(e) {
+
+  const [campaignResponses, updateResponses] = useState({
+    // id: props.id,
+    id: 2,
+    name: '',
+    video: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    youtube: '',
+    soundcloud: '',
+    tiktok: '',
+    spotify: '',
+    bio: ''
+  });
+
+  useEffect(() => {
+    fetch('/artist/editcampaign', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ artist_id: 2 })
+    })
+      .then((response) => response.json())
+      .then((campaignData) => {
+        console.log('Success', campaignData);
+        updateResponses(campaignData);
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
+  });
+
+  const createCampaign = (e) => {
     e.preventDefault();
     //check if spotify url is valid
     if (!e.target.spotifyInput.value.toLowerCase().includes('spotify')) {
       setWarning(true);
       return;
     }
-    const campaignData = {
-      artist_id: 1,
-      name: e.target.campaignName.value,
-      blurb: e.target.bioInput.value,
-      video: e.target.promoVideo.value,
-      facebook: e.target.facebookInput.value,
-      twitter: e.target.twitterInput.value,
-      instagram: e.target.instagramInput.value,
-      youtube: e.target.youtubeInput.value,
-      soundcloud: e.target.soundcloudInput.value,
-      tiktok: e.target.tiktokInput.value,
-      spotify: e.target.spotifyInput.value
-    };
-    fetch('/artist/newCampaign', {
-      method: 'Post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(campaignData)
-    })
-      .then((response) => response.json())
-      .then((campaignData) => {
-        console.log('Success', campaignData);
-      })
-      .catch((error) => {
-        console.log('Error', error);
-      });
-  }
+  };
+
   return (
     <div className='editCampaign' style={{ width: '50%', margin: 'auto' }}>
       <h1>Edit Your Campaign</h1>
@@ -48,7 +57,7 @@ const EditCampaign = (props) => {
       <Form onSubmit={createCampaign}>
         <Form.Group controlId='campaignNameInput'>
           <Form.Label>Campaign Name*</Form.Label>
-          <Form.Control type='input' required />
+          <Form.Control type='input' required defaultValue={campaignResponses.name} />
         </Form.Group>
         <Form.Group controlId='spotifyInput'>
           <Form.Label>Spotify*{warningText}</Form.Label>

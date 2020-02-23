@@ -3,7 +3,7 @@ import React, { useState, Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
-const CreateCampaignComponent = props => {
+const CreateCampaignComponent = (props) => {
   console.log(props.artistId);
   const [spotifyWarning, setWarning] = useState(false);
   const warningText = spotifyWarning ? 'Please include a link to Spotify' : '';
@@ -25,70 +25,70 @@ const CreateCampaignComponent = props => {
       soundcloud: e.target.soundcloudInput.value,
       tiktok: e.target.tiktokInput.value,
       spotify: e.target.spotifyInput.value,
-      bio: e.target.bioInput.value,
+      bio: e.target.bioInput.value
     };
     console.log(campaignData);
-    fetch('/artist/newCampaign', {
+    fetch('/artist/newcampaign', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(campaignData),
+      body: JSON.stringify(campaignData)
     })
-      .then(response => response.json())
-      .then(campaignData => {
+      .then((response) => response.json())
+      .then((campaignData) => {
         console.log('Success', campaignData);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log('Error', error);
       });
   }
   return (
-    <div className="createCampaign" style={{ width: '50%', margin: 'auto' }}>
+    <div className='createCampaign' style={{ width: '50%', margin: 'auto' }}>
       <h1>Create Your Campaign</h1>
       <br></br>
       <Form onSubmit={createCampaign}>
-        <Form.Group controlId="campaignNameInput">
+        <Form.Group controlId='campaignNameInput'>
           <Form.Label>Campaign Name*</Form.Label>
-          <Form.Control type="input" required />
+          <Form.Control type='input' required />
         </Form.Group>
-        <Form.Group controlId="spotifyInput">
+        <Form.Group controlId='spotifyInput'>
           <Form.Label>Spotify*{warningText}</Form.Label>
-          <Form.Control type="input" required />
+          <Form.Control type='input' required />
         </Form.Group>
-        <Form.Group controlId="facebookInput">
+        <Form.Group controlId='facebookInput'>
           <Form.Label>Facebook</Form.Label>
-          <Form.Control type="input" />
+          <Form.Control type='input' />
         </Form.Group>
-        <Form.Group controlId="twitterInput">
+        <Form.Group controlId='twitterInput'>
           <Form.Label>Twitter</Form.Label>
-          <Form.Control type="input" />
+          <Form.Control type='input' />
         </Form.Group>
-        <Form.Group controlId="instagramInput">
+        <Form.Group controlId='instagramInput'>
           <Form.Label>Instagram</Form.Label>
-          <Form.Control type="input" />
+          <Form.Control type='input' />
         </Form.Group>
-        <Form.Group controlId="youtubeInput">
+        <Form.Group controlId='youtubeInput'>
           <Form.Label>YouTube</Form.Label>
-          <Form.Control type="input" />
+          <Form.Control type='input' />
         </Form.Group>
-        <Form.Group controlId="soundcloudInput">
+        <Form.Group controlId='soundcloudInput'>
           <Form.Label>SoundCloud</Form.Label>
-          <Form.Control type="input" />
+          <Form.Control type='input' />
         </Form.Group>
-        <Form.Group controlId="tiktokInput">
+        <Form.Group controlId='tiktokInput'>
           <Form.Label>Tik Tok</Form.Label>
-          <Form.Control type="input" />
+          <Form.Control type='input' />
         </Form.Group>
-        <Form.Group controlId="promoVideoInput">
+        <Form.Group controlId='promoVideoInput'>
           <Form.Label>Promo Video (Uploaded as YouTube link)</Form.Label>
-          <Form.Control type="input" />
+          <Form.Control type='input' />
         </Form.Group>
-        <Form.Group controlId="bioInput">
+        <Form.Group controlId='bioInput'>
           <Form.Label>Bio</Form.Label>
-          <Form.Control as="textarea" rows="3" />
+          <Form.Control as='textarea' rows='3' />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant='primary' type='submit'>
           Submit
         </Button>
       </Form>
