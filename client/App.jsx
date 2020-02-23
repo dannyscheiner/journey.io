@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router-dom';
 import Homepage from './components/Homepage';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Dashboard from './components/Dashboard';
 import Campaign from './components/Campaign';
 import CreateCampaign from './components/CreateCampaign';
 
@@ -15,7 +16,7 @@ class App extends Component {
     super(props);
     this.state = {
       id: '',
-      endpoint: '',
+      userUrl: '',
     };
 
     this.updateId = this.updateId.bind(this);
@@ -41,6 +42,13 @@ class App extends Component {
               path="/signup"
               render={props => (
                 <Signup {...props} updateState={this.updateId} />
+              )}
+            />
+            <Route
+              exact
+              path="/dashboard"
+              render={props => (
+                <Dashboard {...props} artistId={this.state.id} />
               )}
             />
             <Route exact path="/campaign" component={Campaign} />

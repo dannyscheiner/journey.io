@@ -2,17 +2,22 @@ const db = require('../models/dataModels.js');
 const moment = require('moment-timezone');
 
 const artistController = {};
+
+//SQL Query Strings
 const signupQuery =
   'INSERT INTO artist (name, username, password, location, join_date) VALUES ($1, $2, $3, $4, $5) RETURNING id';
 const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
 const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
 const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
+const createCampaignQuery =
+  'INSERT INTO campaign (artist_id, name, active, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
+const getDashboardQuery =
+  'SELECT name, active FROM campaign WHERE artist_id=$1';
+
 const today = moment(new Date())
   .tz('America/Los_Angeles')
   .format()
   .slice(0, 10);
-const createCampaignQuery =
-  "INSERT INTO campaign (artist_id, name, active, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
 
 artistController.createUser = (req, res, next) => {
   db.query(signupQuery, [
@@ -102,7 +107,7 @@ artistController.createCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
 
   db.query(createCampaignQuery, params)
@@ -113,7 +118,22 @@ artistController.createCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in userController.createCampaign',
         status: 400,
-        message: { error: error.detail }
+        message: { error: error.detail },
+      });
+    });
+};
+
+artistController.getDashboard = (req, res, next) => {
+  db.query(getDashboardQuery, [req.params.id])
+    .then(data => {
+      res.locals.campaignData = data.rows;
+      return next();
+    })
+    .catch(err => {
+      return next({
+        log: 'Error occured in artistController.getDashboard',
+        status: 400,
+        message: { err: err },
       });
     });
 };
