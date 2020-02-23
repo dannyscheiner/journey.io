@@ -28,7 +28,7 @@ class Login extends Component {
     })
       .then(data => data.json())
       .then(res => {
-        this.props.updateState(res);
+        this.props.updateState(res.id);
         this.setState({ loginVerify: true, loginError: '' });
       })
       .catch(err => {
@@ -40,7 +40,7 @@ class Login extends Component {
 
   render() {
     if (this.state.loginVerify) {
-      return <Redirect to="/createcampaign" />;
+      return <Redirect to="/dashboard" />;
     }
     return (
       <Form className="login" onSubmit={this.sendLogin}>

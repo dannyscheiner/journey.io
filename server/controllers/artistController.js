@@ -15,8 +15,10 @@ const retrieveCampaign =
   "SELECT * FROM campaign WHERE id = $1 AND active = true";
 const updateCampaign =
   "UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11) WHERE artist_id = $1 AND active = true";
-
+const getDashboardQuery =
+  'SELECT name, active FROM campaign WHERE artist_id=$1';
 // used for query data populating
+
 const today = moment(new Date())
   .tz("America/Los_Angeles")
   .format()
@@ -109,7 +111,7 @@ artistController.createCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
 
   db.query(createCampaignQuery, params)
@@ -141,7 +143,22 @@ artistController.editCampaign = (req, res, next) => {
       return next({
         log: "Error occured in userController.createCampaign",
         status: 400,
-        message: { error: error.detail }
+        message: { error: error.detail },
+      });
+    });
+};
+
+artistController.getDashboard = (req, res, next) => {
+  db.query(getDashboardQuery, [req.params.id])
+    .then(data => {
+      res.locals.campaignData = data.rows;
+      return next();
+    })
+    .catch(err => {
+      return next({
+        log: 'Error occured in artistController.getDashboard',
+        status: 400,
+        message: { err: err },
       });
     });
 };
