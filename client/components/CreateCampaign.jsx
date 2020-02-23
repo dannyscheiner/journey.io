@@ -4,7 +4,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
 const CreateCampaignComponent = props => {
-  console.log(props.artistId);
   const [spotifyWarning, setWarning] = useState(false);
   const warningText = spotifyWarning ? 'Please include a link to Spotify' : '';
   function createCampaign(e) {
@@ -15,7 +14,7 @@ const CreateCampaignComponent = props => {
       return;
     }
     const campaignData = {
-      artist_id: 1,
+      artist_id: props.artistId,
       name: e.target.campaignNameInput.value,
       video: e.target.promoVideoInput.value,
       facebook: e.target.facebookInput.value,
@@ -25,15 +24,15 @@ const CreateCampaignComponent = props => {
       soundcloud: e.target.soundcloudInput.value,
       tiktok: e.target.tiktokInput.value,
       spotify: e.target.spotifyInput.value,
-      bio: e.target.bioInput.value,
+      bio: e.target.bioInput.value
     };
     console.log(campaignData);
     fetch('/artist/newCampaign', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(campaignData),
+      body: JSON.stringify(campaignData)
     })
       .then(response => response.json())
       .then(campaignData => {
