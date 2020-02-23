@@ -28,11 +28,11 @@ class Signup extends Component {
     })
       .then(data => data.json())
       .then(res => {
-        this.props.updateState(res);
+        this.props.updateState(res.id);
         this.setState({ signupVerify: true });
       })
       .catch(err => {
-        console.log('Login ERROR: ', err);
+        console.log('Signup ERROR: ', err);
       });
   }
 
