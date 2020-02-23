@@ -23,8 +23,20 @@ router.post(
   }
 );
 
-router.post("/newCampaign", artistController.createCampaign, (req, res) => {
+router.get("/dashboard/:id", artistController.getDashboard, (req, res) => {
+  return res.status(200).json({ campaigns: res.locals.campaignData });
+});
+
+router.post("/createcampaign", artistController.createCampaign, (req, res) => {
   return res.sendStatus(200);
 });
+
+router.post("/editcampaign", artistController.editCampaign, (req, res) => {
+  return res.status(200).json(res.locals.campaignData);
+});
+
+// router.post("/updateCampaign", artistController.updateCampaign, (req, res) => {
+//   return res.status(200).json(res.locals.campaignData);
+// });
 
 module.exports = router;

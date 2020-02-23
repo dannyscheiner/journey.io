@@ -3,8 +3,12 @@ import React, { useState, Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
+<<<<<<< HEAD
 const CreateCampaignComponent = (props) => {
   console.log(props.artistId);
+=======
+const CreateCampaignComponent = props => {
+>>>>>>> 42490f3f693200704e801d95a4f2e14125b18bed
   const [spotifyWarning, setWarning] = useState(false);
   const warningText = spotifyWarning ? 'Please include a link to Spotify' : '';
   function createCampaign(e) {
@@ -15,7 +19,7 @@ const CreateCampaignComponent = (props) => {
       return;
     }
     const campaignData = {
-      artist_id: 1,
+      artist_id: props.artistId,
       name: e.target.campaignNameInput.value,
       video: e.target.promoVideoInput.value,
       facebook: e.target.facebookInput.value,
