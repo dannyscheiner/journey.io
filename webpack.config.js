@@ -6,7 +6,7 @@ module.exports = {
   entry: ['./client/index.js'],
   output: {
     path: path.join(__dirname, './build'),
-    publicPath: '/',
+    publicPath: '/*',
     filename: 'bundle.js',
   },
   mode: process.env.NODE_ENV,

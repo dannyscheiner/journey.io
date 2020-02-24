@@ -1,9 +1,9 @@
 const { Pool } = require('pg');
-const PG_URL = process.env.PG_URL;
+const PG_URL = '';
 
 console.log('pgurl', PG_URL);
 const pool = new Pool({
-  connectionString: PG_URL
+  connectionString: PG_URL,
 });
 
 //TABLE USERS
@@ -28,5 +28,5 @@ module.exports = {
   query: (text, params, cb) => {
     console.log('executed query', text);
     return pool.query(text, params, cb);
-  }
+  },
 };
