@@ -21,7 +21,7 @@ userController.getCampaigns = (req, res, next) => {
       return next({
         log: 'Error occured in userController.getCampaigns',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -32,7 +32,7 @@ userController.submitInterest = (req, res, next) => {
     req.body.location,
     req.body.campaignId,
     req.body.lat,
-    req.body.lng
+    req.body.lng,
   ];
 
   db.query(submitInterestQuery, data)
@@ -45,7 +45,7 @@ userController.submitInterest = (req, res, next) => {
       return next({
         log: 'Error occured in userController.submitInterest',
         status: 400,
-        message: { error: err.detail }
+        message: { error: err.detail },
       });
     });
 };
@@ -58,7 +58,7 @@ userController.retrieveCampaignLocationData = (req, res, next) => {
       console.log('Campaign data collected successfully');
       const locationData = result.rows.map(data => ({
         lat: data.lat,
-        lng: data.lng
+        lng: data.lng,
       }));
       res.locals.campaign = {};
       res.locals.campaign.locationData = locationData;
@@ -67,9 +67,10 @@ userController.retrieveCampaignLocationData = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.collectInterest',
+        log:
+          'Error occured in userController.retrieveCampaignLocationDataQuery',
         status: 400,
-        message: { error: err.detail }
+        message: { error: err.detail },
       });
     });
 };

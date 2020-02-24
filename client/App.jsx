@@ -18,7 +18,8 @@ class App extends Component {
     super(props);
     this.state = {
       id: '',
-      activeCampaigns: []
+      artistName: '',
+      activeCampaigns: [],
     };
 
     this.updateId = this.updateId.bind(this);
@@ -35,8 +36,8 @@ class App extends Component {
       });
   }
 
-  updateId(artistId) {
-    this.setState({ id: artistId });
+  updateId(artistId, artistName) {
+    this.setState({ id: artistId, artistName: artistName });
   }
 
   render() {
@@ -54,6 +55,7 @@ class App extends Component {
                 {...props}
                 artistName={obj.artist}
                 artistId={obj.artist_id}
+                artistName={obj.artist}
                 campaignId={obj.campaign_id}
               />
             )}
@@ -83,7 +85,11 @@ class App extends Component {
                 exact
                 path="/dashboard"
                 render={props => (
-                  <Dashboard {...props} artistId={this.state.id} />
+                  <Dashboard
+                    {...props}
+                    artistId={this.state.id}
+                    artistName={this.state.artistName}
+                  />
                 )}
               />
               <Route
@@ -120,7 +126,11 @@ class App extends Component {
               exact
               path="/dashboard"
               render={props => (
-                <Dashboard {...props} artistId={this.state.id} />
+                <Dashboard
+                  {...props}
+                  artistId={this.state.id}
+                  artistName={this.state.artistName}
+                />
               )}
             />
             <Route

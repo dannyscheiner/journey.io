@@ -2,17 +2,36 @@ import React from 'react';
 
 import { Card, Button } from 'react-bootstrap';
 
-const InactiveCard = ({ name, id, onClick }) => {
+const InactiveCard = ({
+  name,
+  id,
+  show,
+  onClick,
+  showDetails,
+  toggleDetailsModal,
+}) => {
   return (
     <Card style={{ width: '25rem', backgroundColor: '#CACACA' }}>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className="inactiveCard">Inactive</Card.Subtitle>
         <div className="buttons">
-          <Button type="submit" variant="outline-info">
-            View Metrics
+          <Button
+            type="submit"
+            variant="outline-info"
+            onClick={() => {
+              showDetails(id);
+            }}
+          >
+            View Details
           </Button>
         </div>
+        <Details
+          show={show}
+          campaign={name}
+          id={id}
+          toggleDetailsModal={toggleDetailsModal}
+        />
       </Card.Body>
     </Card>
   );

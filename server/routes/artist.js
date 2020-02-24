@@ -2,13 +2,16 @@
 const express = require('express');
 const router = express.Router();
 const artistController = require('../controllers/artistController');
+const userController = require('../controllers/userController');
 
 router.post(
   '/login',
   artistController.loginUser,
   artistController.setCookie,
   (req, res) => {
-    return res.status(200).json({ id: res.locals.userId });
+    return res
+      .status(200)
+      .json({ id: res.locals.artistId, name: res.locals.artistName });
   },
 );
 
@@ -42,6 +45,15 @@ router.patch(
   artistController.deactivateCampaign,
   (req, res) => {
     return res.status(200).json('Campaign successfully deactivated');
+  },
+);
+
+router.get(
+  '/campaign/:id',
+  userController.retrieveCampaignLocationData,
+  artistController.getCampaignDetails,
+  (req, res) => {
+    return res.status(200).json(res.locals.campaign);
   },
 );
 
