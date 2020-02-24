@@ -19,6 +19,7 @@ app.use('/artist', artistRouter);
 //  middleware for grabbing and sending location to database from user inputs
 app.use('/user', userRouter);
 
+
 //  index.html
 app.get('/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../index.html'));
@@ -32,7 +33,7 @@ app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 400,
-    message: { err: 'An error occurred' }
+    message: { err: 'An error occurred' },
   };
   const errorObj = Object.assign({}, defaultErr, err);
   return res.status(errorObj.status).json(errorObj.message);

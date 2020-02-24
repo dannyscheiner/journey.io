@@ -61,35 +61,35 @@ const CreateCampaignComponent = props => {
           </Form.Group>
           <Form.Group controlId="spotifyInput">
             <Form.Label>Spotify*{warningText}</Form.Label>
-            <Form.Control type="input" required />
+            <Form.Control type="url" required />
           </Form.Group>
           <Form.Group controlId="facebookInput">
             <Form.Label>Facebook</Form.Label>
-            <Form.Control type="input" />
+            <Form.Control type="url" />
           </Form.Group>
           <Form.Group controlId="twitterInput">
             <Form.Label>Twitter</Form.Label>
-            <Form.Control type="input" />
+            <Form.Control type="url" />
           </Form.Group>
           <Form.Group controlId="instagramInput">
             <Form.Label>Instagram</Form.Label>
-            <Form.Control type="input" />
+            <Form.Control type="url" />
           </Form.Group>
           <Form.Group controlId="youtubeInput">
             <Form.Label>YouTube</Form.Label>
-            <Form.Control type="input" />
+            <Form.Control type="url" />
           </Form.Group>
           <Form.Group controlId="soundcloudInput">
             <Form.Label>SoundCloud</Form.Label>
-            <Form.Control type="input" />
+            <Form.Control type="url" />
           </Form.Group>
           <Form.Group controlId="tiktokInput">
             <Form.Label>Tik Tok</Form.Label>
-            <Form.Control type="input" />
+            <Form.Control type="url" />
           </Form.Group>
           <Form.Group controlId="promoVideoInput">
             <Form.Label>Promo Video (Uploaded as YouTube link)</Form.Label>
-            <Form.Control type="input" />
+            <Form.Control type="url" />
           </Form.Group>
           <Form.Group controlId="bioInput">
             <Form.Label>Bio</Form.Label>

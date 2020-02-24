@@ -9,7 +9,7 @@ router.post(
   artistController.setCookie,
   (req, res) => {
     return res.status(200).json({ id: res.locals.userId });
-  }
+  },
 );
 
 router.post(
@@ -18,10 +18,10 @@ router.post(
   artistController.setCookie,
   (req, res) => {
     return res.status(200).json({ id: res.locals.userId });
-  }
+  },
 );
 
-router.get('/dashboard/:id', artistController.getDashboard, (req, res) => {
+router.get('/dashboard', artistController.getDashboard, (req, res) => {
   return res.status(200).json({ campaigns: res.locals.campaignData });
 });
 
@@ -36,5 +36,13 @@ router.post('/editcampaign', artistController.editCampaign, (req, res) => {
 router.post('/updateCampaign', artistController.updateCampaign, (req, res) => {
   return res.status(200).json('Successful Campaign Update');
 });
+
+router.patch(
+  '/deactivatecampaign',
+  artistController.deactivateCampaign,
+  (req, res) => {
+    return res.status(200).json('Campaign successfully deactivated');
+  },
+);
 
 module.exports = router;

@@ -68,7 +68,7 @@ const EditCampaign = props => {
           <Form.Group controlId="spotifyInput">
             <Form.Label>Spotify*{warningText}</Form.Label>
             <Form.Control
-              type="input"
+              type="url"
               required
               defaultValue={props.currentCampaign.spotify}
             />
@@ -76,7 +76,7 @@ const EditCampaign = props => {
           <Form.Group controlId="facebookInput">
             <Form.Label>Facebook</Form.Label>
             <Form.Control
-              type="input"
+              type="url"
               defaultValue={props.currentCampaign.facebook}
             />
           </Form.Group>
@@ -90,35 +90,35 @@ const EditCampaign = props => {
           <Form.Group controlId="instagramInput">
             <Form.Label>Instagram</Form.Label>
             <Form.Control
-              type="input"
+              type="url"
               defaultValue={props.currentCampaign.instagram}
             />
           </Form.Group>
           <Form.Group controlId="youtubeInput">
             <Form.Label>YouTube</Form.Label>
             <Form.Control
-              type="input"
+              type="url"
               defaultValue={props.currentCampaign.youtube}
             />
           </Form.Group>
           <Form.Group controlId="soundcloudInput">
             <Form.Label>SoundCloud</Form.Label>
             <Form.Control
-              type="input"
+              type="url"
               defaultValue={props.currentCampaign.soundcloud}
             />
           </Form.Group>
           <Form.Group controlId="tiktokInput">
             <Form.Label>Tik Tok</Form.Label>
             <Form.Control
-              type="input"
+              type="url"
               defaultValue={props.currentCampaign.tiktok}
             />
           </Form.Group>
           <Form.Group controlId="promoVideoInput">
             <Form.Label>Promo Video (Uploaded as YouTube link)</Form.Label>
             <Form.Control
-              type="input"
+              type="url"
               defaultValue={props.currentCampaign.video}
             />
           </Form.Group>
