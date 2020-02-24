@@ -17,14 +17,14 @@ class App extends Component {
     super(props);
     this.state = {
       id: '',
-      activeCampaigns: [],
+      activeCampaigns: []
     };
 
     this.updateId = this.updateId.bind(this);
   }
 
   componentDidMount() {
-    fetch('/getCampaigns')
+    fetch('/user/getCampaigns')
       .then(data => data.json())
       .then(res => {
         this.setState({ activeCampaigns: res.campaigns });
@@ -59,34 +59,34 @@ class App extends Component {
         );
       });
       return (
-        <div className="router">
+        <div className='router'>
           <main>
             <Switch>
-              <Route exact path="/" component={Homepage} />
+              <Route exact path='/' component={Homepage} />
               <Route
                 exact
-                path="/login"
+                path='/login'
                 render={props => (
                   <Login {...props} updateState={this.updateId} />
                 )}
               />
               <Route
                 exact
-                path="/signup"
+                path='/signup'
                 render={props => (
                   <Signup {...props} updateState={this.updateId} />
                 )}
               />
               <Route
                 exact
-                path="/dashboard"
+                path='/dashboard'
                 render={props => (
                   <Dashboard {...props} artistId={this.state.id} />
                 )}
               />
               <Route
                 exact
-                path="/createcampaign"
+                path='/createcampaign'
                 render={props => (
                   <CreateCampaign {...props} artistId={this.state.id} />
                 )}
@@ -105,27 +105,35 @@ class App extends Component {
             <Route
               exact
               path='/login'
-              render={(props) => <Login {...props} updateState={this.updateId} />}
+              render={props => <Login {...props} updateState={this.updateId} />}
             />
             <Route
               exact
               path='/signup'
-              render={(props) => <Signup {...props} updateState={this.updateId} />}
+              render={props => (
+                <Signup {...props} updateState={this.updateId} />
+              )}
             />
             <Route
               exact
               path='/dashboard'
-              render={(props) => <Dashboard {...props} artistId={this.state.id} />}
+              render={props => (
+                <Dashboard {...props} artistId={this.state.id} />
+              )}
             />
             <Route
               exact
               path='/createcampaign'
-              render={(props) => <CreateCampaign {...props} artistId={this.state.id} />}
+              render={props => (
+                <CreateCampaign {...props} artistId={this.state.id} />
+              )}
             />
             <Route
               exact
               path='/editcampaign'
-              render={(props) => <EditCampaign {...props} artistId={this.state.id} />}
+              render={props => (
+                <EditCampaign {...props} artistId={this.state.id} />
+              )}
             />
           </Switch>
         </main>
