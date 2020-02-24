@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import Map from './Map.jsx';
 import PlacesAutocomplete, {
@@ -81,7 +81,24 @@ class LocationSearchInput extends React.Component {
     );
   }
 }
+
 const Campaign = props => {
+  console.log(props.artistId);
+  console.log(props.campaignId);
+  const [campaignData, updateCampaignData] = useState({});
+  useEffect(() => {
+    fetch('/editcampaign', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify()
+    })
+      .then(res => res.json())
+      .then(response => {
+        console.log(response);
+      });
+  });
   return (
     <>
       <LocationSearchInput />
