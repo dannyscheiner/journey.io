@@ -1,4 +1,4 @@
-const db = require('../models/dataModels.js');
+const db = require('../models/dataModels');
 const moment = require('moment-timezone');
 
 const artistController = {};
@@ -10,11 +10,13 @@ const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
 const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
 const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
 const createCampaignQuery =
-  'INSERT INTO campaign (artist_id, name, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
-const retrieveCampaign = 'SELECT * FROM campaign WHERE id = $1 AND active = true';
+  'INSERT INTO campaign (artist_id, name, active, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
+const retrieveCampaign =
+  'SELECT * FROM campaign WHERE id = $1 AND active = true';
 const updateCampaign =
   'UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11 WHERE id = $1 AND active = true';
-const getDashboardQuery = 'SELECT name, active FROM campaign WHERE artist_id=$1';
+const getDashboardQuery =
+  'SELECT name, active, id FROM campaign WHERE artist_id=$1';
 // used for query data populating
 
 const today = moment(new Date())
@@ -29,7 +31,7 @@ artistController.createUser = (req, res, next) => {
     req.body.username,
     req.body.password,
     req.body.location,
-    today
+    today,
   ])
     .then((data) => {
       res.locals.userId = data.rows[0].id;
@@ -37,9 +39,9 @@ artistController.createUser = (req, res, next) => {
     })
     .catch((err) => {
       return next({
-        log: 'Error occured in userController.createUser',
+        log: 'Error occured in artistController.createUser',
         status: 400,
-        message: { err: err.detail }
+        message: { err: err },
       });
     });
 };
@@ -56,9 +58,9 @@ artistController.loginUser = (req, res, next) => {
     })
     .catch((err) => {
       return next({
-        log: 'Error occured in userController.loginUser',
+        log: 'Error occured in artistController.loginUser',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -75,7 +77,7 @@ artistController.setCookie = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.setCookie',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -109,19 +111,19 @@ artistController.createCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
 
   db.query(createCampaignQuery, params)
-    .then((result) => {
+    .then(result => {
       console.log('Campaign created successfully');
       return next();
     })
-    .catch((error) => {
+    .catch((err) => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { error: error.detail }
+        message: { error: err.detail },
       });
     });
 };
@@ -137,11 +139,11 @@ artistController.editCampaign = (req, res, next) => {
       res.locals.campaignData = result.rows[0];
       return next();
     })
-    .catch((error) => {
+    .catch((err) => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { error: error.detail }
+        message: { err: err.detail },
       });
     });
 };
@@ -161,26 +163,26 @@ artistController.updateCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
 
   console.log(params);
 
   db.query(updateCampaign, params)
     .then((result) => next()) // result from query isn't needed when updating
-    .catch((e) => {
-      console.log(e);
+    .catch((err) => {
       return next({
         log: 'Error occured in userController.createCampaign',
         status: 400,
-        message: { error: e.detail }
+        message: { error: err.detail }
       });
     });
 };
 
 artistController.getDashboard = (req, res, next) => {
-  db.query(getDashboardQuery, [req.params.id])
-    .then((data) => {
+  const id = req.params.id;
+  db.query(getDashboardQuery, [id])
+    .then(data => {
       res.locals.campaignData = data.rows;
       return next();
     })
@@ -188,7 +190,7 @@ artistController.getDashboard = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.getDashboard',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
