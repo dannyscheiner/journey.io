@@ -12,6 +12,13 @@ router.post('/campaign', userController.submitInterest, (req, res) => {
   res.status(200).json('success adding interest');
 });
 
-// router.get('/campaign')
+// collect location and campaign data upon load of /user/campaign/:campaignId
+router.get(
+  '/campaign/:id',
+  userController.retrieveCampaignLocationData,
+  (req, res) => {
+    res.status(200).json(res.locals.campaign);
+  }
+);
 
 module.exports = router;

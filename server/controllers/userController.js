@@ -8,7 +8,8 @@ const getCampaignsQuery =
 const submitInterestQuery =
   'INSERT INTO datapoint (location, campaign_id, lat, lng) VALUES ($1, $2, $3, $4)';
 
-const collectInterestQuery = 'SELECT * FROM datapoint WHERE campaign_id = $1';
+const retrieveCampaignLocationDataQuery =
+  'SELECT c.*, d.* FROM campaign c INNER JOIN datapoint d ON c.id = d.campaign_id WHERE c.id = $1';
 
 userController.getCampaigns = (req, res, next) => {
   db.query(getCampaignsQuery)
@@ -27,14 +28,13 @@ userController.getCampaigns = (req, res, next) => {
 
 // submit new entry to datapoint table with user location data
 userController.submitInterest = (req, res, next) => {
-  console.log(req.body);
   const data = [
     req.body.location,
     req.body.campaignId,
     req.body.lat,
     req.body.lng
   ];
-  console.log(data);
+
   db.query(submitInterestQuery, data)
     .then(result => {
       console.log('Campaign interest submitted successfully');
@@ -50,12 +50,19 @@ userController.submitInterest = (req, res, next) => {
     });
 };
 
-userController.collectInterest = (req, res, next) => {
-  const data = req.params.campaignId;
+userController.retrieveCampaignLocationData = (req, res, next) => {
+  const data = [req.params.id];
 
-  db.query(collectInterestQuery, data)
+  db.query(retrieveCampaignLocationDataQuery, data)
     .then(result => {
       console.log('Campaign data collected successfully');
+      const locationData = result.rows.map(data => ({
+        lat: data.lat,
+        lng: data.lng
+      }));
+      res.locals.campaign = {};
+      res.locals.campaign.locationData = locationData;
+      res.locals.campaign.data = result.rows[0];
       return next();
     })
     .catch(err => {
