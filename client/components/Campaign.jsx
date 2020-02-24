@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Card } from 'react-bootstrap';
 import LocationSearchInput from './LocationSearchInput';
 import Map from './Map.jsx';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
@@ -9,13 +10,28 @@ class Campaign extends React.Component {
     this.state = {
       address: '',
       hasSubmitted: false,
-      coordinates: {}
+      coordinates: {},
+      campaignLinks: {}
     };
     this.handleSelect = this.handleSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitInterest = this.submitInterest.bind(this);
   }
+  componentDidMount() {
+    fetch(`/user/campaign/${this.props.campaignId}`)
+      .then(res => res.json())
+      .then(response => {
+        console.log(response.data);
+        this.setState({ campaignLinks: response.data });
+      })
+      .catch(err => {
+        console.log('error', err);
+      });
+  }
   submitInterest = e => {
+    if (this.state.hasSubmitted) {
+      return;
+    }
     const interestSubmissionBody = {
       campaignId: this.props.campaignId,
       lat: this.state.coordinates.lat,
@@ -32,7 +48,6 @@ class Campaign extends React.Component {
       .then(res => res.json())
       .then(response => {
         console.log(response);
-
         this.setState({ hasSubmitted: true });
         console.log('Success submitting interest');
       })
@@ -63,16 +78,19 @@ class Campaign extends React.Component {
   render() {
     console.log('state', this.state);
     return (
-      <>
-        <LocationSearchInput
-          submitInterest={this.submitInterest}
-          handleChange={this.handleChange}
-          handleSelect={this.handleSelect}
-          submitInterest={this.submitInterest}
-          address={this.state.address}
-        />
-        <Map markers={this.state.markers} campaignId={this.props.campaignId} />
-      </>
+      <div className="d-flex mx-auto">
+        <Card style={{ width: '50em' }} className="justify-content-center">
+          Let {this.props.artistName} know that you want to see them in your
+          city!
+          <LocationSearchInput
+            handleChange={this.handleChange}
+            handleSelect={this.handleSelect}
+            submitInterest={this.submitInterest}
+            address={this.state.address}
+          />
+          <Map campaignId={this.props.campaignId} />
+        </Card>
+      </div>
     );
   }
 }
