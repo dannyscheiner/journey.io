@@ -12,9 +12,8 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fetchedCampaigns: false,
       campaigns: [],
-      currentCampaign: '',
+      currentCampaign: {},
       showEditModal: false,
       showCreateModal: false
     };
@@ -30,7 +29,13 @@ class Dashboard extends Component {
     this.setState({ showEditModal: show });
   }
   assignCurrentCampaign(id) {
-    this.setState({ currentCampaign: id, showEditModal: true });
+    let currentCampaign = {};
+    this.state.campaigns.forEach(campaign => {
+      if (id === campaign.id) {
+        currentCampaign = campaign;
+      }
+    });
+    this.setState({ currentCampaign, showEditModal: true });
   }
   loadArtistCampaigns() {
     fetch('/artist/dashboard/' + this.props.artistId)
@@ -52,6 +57,7 @@ class Dashboard extends Component {
   }
 
   render() {
+    console.log(this.state.currentCampaign);
     const { campaigns } = this.state;
     const cards = campaigns.map((campaign, i) => {
       if (campaign.active) {
@@ -95,6 +101,7 @@ class Dashboard extends Component {
           show={this.state.showEditModal}
           currentCampaign={this.state.currentCampaign}
           toggleEditModal={this.toggleEditModal}
+          loadArtistCampaigns={this.loadArtistCampaigns}
         />
         <CreateCampaign
           show={this.state.showCreateModal}
