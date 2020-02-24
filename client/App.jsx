@@ -54,6 +54,7 @@ class App extends Component {
               <Campaign
                 {...props}
                 artistId={obj.artist_id}
+                artistName={obj.artist}
                 campaignId={obj.campaign_id}
               />
             )}
