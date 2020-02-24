@@ -3,7 +3,6 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
 const InactiveCard = ({ name, id, onClick }) => {
-  console.log(id);
   return (
     <Card style={{ width: '20rem' }}>
       <Card.Body>

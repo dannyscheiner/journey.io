@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
 const ActiveCard = ({ name, id, onClick }) => {
+  //card display
   return (
     <Card style={{ width: '20rem' }}>
       <Card.Body>

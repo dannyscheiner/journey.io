@@ -10,7 +10,7 @@ const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
 const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
 const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
 const createCampaignQuery =
-  'INSERT INTO campaign (artist_id, name, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
+  'INSERT INTO campaign (artist_id, name, active, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
 const retrieveCampaign =
   'SELECT * FROM campaign WHERE id = $1 AND active = true';
 const updateCampaign =
