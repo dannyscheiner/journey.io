@@ -17,11 +17,7 @@ class App extends Component {
     super(props);
     this.state = {
       id: '',
-<<<<<<< HEAD
-      endpoint: ''
-=======
-      userUrl: '',
->>>>>>> 42490f3f693200704e801d95a4f2e14125b18bed
+      userUrl: ''
     };
 
     this.updateId = this.updateId.bind(this);
@@ -49,12 +45,10 @@ class App extends Component {
             />
             <Route
               exact
-              path="/dashboard"
-              render={props => (
-                <Dashboard {...props} artistId={this.state.id} />
-              )}
+              path='/dashboard'
+              render={(props) => <Dashboard {...props} artistId={this.state.id} />}
             />
-            <Route exact path="/campaign" component={Campaign} />
+            <Route exact path='/campaign' component={Campaign} />
             <Route
               exact
               path='/createcampaign'

@@ -29,6 +29,7 @@ const EditCampaign = (props) => {
       headers: {
         'Content-Type': 'application/json'
       },
+      // need to replace hard code id
       body: JSON.stringify({ artist_id: 2 })
     })
       .then((response) => response.json())
@@ -39,64 +40,93 @@ const EditCampaign = (props) => {
       .catch((error) => {
         console.log('Error', error);
       });
-  });
+  }, []);
 
-  const createCampaign = (e) => {
+  const editCampaign = (e) => {
     e.preventDefault();
     //check if spotify url is valid
     if (!e.target.spotifyInput.value.toLowerCase().includes('spotify')) {
       setWarning(true);
       return;
     }
+
+    const editCampaignFormData = {
+      id: 2, // campaign_id passed in from fetch post, passed down thru state
+      name: e.target.campaignNameInput.value,
+      video: e.target.promoVideoInput.value,
+      facebook: e.target.facebookInput.value,
+      twitter: e.target.twitterInput.value,
+      instagram: e.target.instagramInput.value,
+      youtube: e.target.youtubeInput.value,
+      soundcloud: e.target.soundcloudInput.value,
+      tiktok: e.target.tiktokInput.value,
+      spotify: e.target.spotifyInput.value,
+      bio: e.target.bioInput.value
+    };
+
+    fetch('/artist/updatecampaign', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(editCampaignFormData)
+    })
+      .then((response) => response.json())
+      .then((campaignData) => {
+        console.log('Success', campaignData);
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
   };
 
   return (
     <div className='editCampaign' style={{ width: '50%', margin: 'auto' }}>
       <h1>Edit Your Campaign</h1>
       <br></br>
-      <Form onSubmit={createCampaign}>
+      <Form onSubmit={editCampaign}>
         <Form.Group controlId='campaignNameInput'>
           <Form.Label>Campaign Name*</Form.Label>
           <Form.Control type='input' required defaultValue={campaignResponses.name} />
         </Form.Group>
         <Form.Group controlId='spotifyInput'>
           <Form.Label>Spotify*{warningText}</Form.Label>
-          <Form.Control type='input' required />
+          <Form.Control type='input' required defaultValue={campaignResponses.spotify} />
         </Form.Group>
         <Form.Group controlId='facebookInput'>
           <Form.Label>Facebook</Form.Label>
-          <Form.Control type='input' />
+          <Form.Control type='input' defaultValue={campaignResponses.facebook} />
         </Form.Group>
         <Form.Group controlId='twitterInput'>
           <Form.Label>Twitter</Form.Label>
-          <Form.Control type='input' />
+          <Form.Control type='input' defaultValue={campaignResponses.twitter} />
         </Form.Group>
         <Form.Group controlId='instagramInput'>
           <Form.Label>Instagram</Form.Label>
-          <Form.Control type='input' />
+          <Form.Control type='input' defaultValue={campaignResponses.instagram} />
         </Form.Group>
         <Form.Group controlId='youtubeInput'>
           <Form.Label>YouTube</Form.Label>
-          <Form.Control type='input' />
+          <Form.Control type='input' defaultValue={campaignResponses.youtube} />
         </Form.Group>
         <Form.Group controlId='soundcloudInput'>
           <Form.Label>SoundCloud</Form.Label>
-          <Form.Control type='input' />
+          <Form.Control type='input' defaultValue={campaignResponses.soundcloud} />
         </Form.Group>
         <Form.Group controlId='tiktokInput'>
           <Form.Label>Tik Tok</Form.Label>
-          <Form.Control type='input' />
+          <Form.Control type='input' defaultValue={campaignResponses.tiktok} />
         </Form.Group>
         <Form.Group controlId='promoVideoInput'>
           <Form.Label>Promo Video (Uploaded as YouTube link)</Form.Label>
-          <Form.Control type='input' />
+          <Form.Control type='input' defaultValue={campaignResponses.video} />
         </Form.Group>
         <Form.Group controlId='bioInput'>
           <Form.Label>Bio</Form.Label>
-          <Form.Control as='textarea' rows='3' />
+          <Form.Control as='textarea' rows='3' defaultValue={campaignResponses.bio} />
         </Form.Group>
         <Button variant='primary' type='submit'>
-          Submit
+          Save Changes
         </Button>
       </Form>
     </div>
