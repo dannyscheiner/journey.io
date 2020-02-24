@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import LocationSearchInput from './LocationSearchInput';
 import Map from './Map.jsx';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng
-} from 'react-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
-class LocationSearchInput extends React.Component {
+class Campaign extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,16 +12,34 @@ class LocationSearchInput extends React.Component {
       coordinates: {}
     };
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.submitInterest = this.submitInterest.bind(this);
   }
   submitInterest = e => {
-    console.log(this.state.address);
+    const interestSubmissionBody = {
+      id: this.props.campaignId,
+      lat: this.state.coordinates.lat,
+      lng: this.state.coordinates.lng,
+      location: this.state.address
+    };
+    fetch('/user/campaign/', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ interestSubmissionBody })
+    })
+      .then(res => res.json())
+      .then(response => {
+        this.setState({ hasSubmitted: true });
+        console.log('Success submitting interest');
+      })
+      .catch(err => {
+        console.log('Error submitting interest', err);
+      });
   };
-
   handleChange = address => {
     this.setState({ address });
   };
-
-  // When the user selects an autocomplete suggestion...
   handleSelect = address => {
     // Pull in the setFormLocation function from the parent ReportForm
     let city;
@@ -42,67 +57,20 @@ class LocationSearchInput extends React.Component {
       })
       .catch(error => console.error('Error', error));
   };
-
   render() {
-    const renderInput = ({
-      getInputProps,
-      getSuggestionItemProps,
-      suggestions
-    }) => (
-      <div className="autocomplete-root">
-        <input className="form-control" id="cityForm" {...getInputProps()} />
-        <div className="autocomplete-dropdown-container">
-          {suggestions.map(suggestion => (
-            <div {...getSuggestionItemProps(suggestion)} className="suggestion">
-              <span>{suggestion.description}</span>
-            </div>
-          ))}
-        </div>
-        <Button onClick={this.submitInterest}>Count me in!</Button>
-      </div>
-    );
-
-    // Limit the suggestions to show only cities in the US
-    const searchOptions = {
-      types: ['(cities)'],
-      componentRestrictions: { country: 'us' }
-    };
-
+    console.log(this.state);
     return (
-      <PlacesAutocomplete
-        value={this.state.address}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-        // Pass the search options prop
-        searchOptions={searchOptions}
-      >
-        {renderInput}
-      </PlacesAutocomplete>
+      <>
+        <LocationSearchInput
+          submitInterest={this.submitInterest}
+          handleChange={this.handleChange}
+          submitInterest={this.submitInterest}
+          address={this.state.address}
+        />
+        <Map />
+      </>
     );
   }
 }
-
-const Campaign = props => {
-  const [campaignData, updateCampaignData] = useState({});
-  useEffect(() => {
-    fetch('/editcampaign', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify()
-    })
-      .then(res => res.json())
-      .then(response => {
-        console.log(response);
-      });
-  });
-  return (
-    <>
-      <LocationSearchInput />
-      <Map />
-    </>
-  );
-};
 
 export default Campaign;
