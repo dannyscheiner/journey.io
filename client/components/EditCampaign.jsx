@@ -2,7 +2,6 @@
 import React, { useState, Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Form, Button, Modal } from 'react-bootstrap';
-import { useEffect, useLayoutEffect } from 'react';
 
 const EditCampaign = props => {
   const [spotifyWarning, setWarning] = useState(false);
