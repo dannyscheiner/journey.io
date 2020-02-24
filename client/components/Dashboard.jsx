@@ -57,7 +57,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    console.log(this.state.currentCampaign);
     const { campaigns } = this.state;
     const cards = campaigns.map((campaign, i) => {
       if (campaign.active) {
