@@ -11,8 +11,7 @@ const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
 const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
 const createCampaignQuery =
   'INSERT INTO campaign (artist_id, name, active, video, facebook, twitter, instagram, youtube, soundcloud, tiktok, spotify, bio ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
-const retrieveCampaign =
-  'SELECT * FROM campaign WHERE id = $1 AND active = true';
+const retrieveCampaign = 'SELECT * FROM campaign WHERE id = $1 AND active = true';
 const updateCampaign =
   'UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11 WHERE id = $1 AND active = true';
 const getDashboardQuery = 'SELECT * FROM campaign WHERE artist_id=$1';
@@ -32,11 +31,11 @@ artistController.createUser = (req, res, next) => {
     req.body.location,
     today
   ])
-    .then(data => {
+    .then((data) => {
       res.locals.userId = data.rows[0].id;
       return next();
     })
-    .catch(err => {
+    .catch((err) => {
       return next({
         log: 'Error occured in artistController.createUser',
         status: 400,
@@ -47,7 +46,7 @@ artistController.createUser = (req, res, next) => {
 
 artistController.loginUser = (req, res, next) => {
   db.query(loginQuery, [req.body.username])
-    .then(dbPw => {
+    .then((dbPw) => {
       if (dbPw.rows[0].password === req.body.password) {
         res.locals.userId = dbPw.rows[0].id;
         return next();
@@ -55,7 +54,7 @@ artistController.loginUser = (req, res, next) => {
         res.status(400).send('Invalid username/password');
       }
     })
-    .catch(err => {
+    .catch((err) => {
       return next({
         log: 'Error occured in artistController.loginUser',
         status: 400,
@@ -69,10 +68,10 @@ artistController.setCookie = (req, res, next) => {
   res.cookie('artistI', res.locals.userId, { httpOnly: true });
   res.cookie('cookie', random, { httpOnly: true });
   db.query(updateCookie, [random, res.locals.userId])
-    .then(res => {
+    .then((res) => {
       return next();
     })
-    .catch(err => {
+    .catch((err) => {
       return next({
         log: 'Error occured in artistController.setCookie',
         status: 400,
@@ -86,7 +85,7 @@ artistController.verifyCookie = (req, res, next) => {
     res.locals.verify = false;
     return next();
   }
-  db.query(verifyCookie, [req.cookies.toDoI]).then(verif => {
+  db.query(verifyCookie, [req.cookies.toDoI]).then((verif) => {
     if (verif.rows[0].cookie == req.cookies.cookie) {
       res.locals.verify = true;
       return next();
@@ -114,11 +113,11 @@ artistController.createCampaign = (req, res, next) => {
   ];
 
   db.query(createCampaignQuery, params)
-    .then(result => {
+    .then((result) => {
       console.log('Campaign created successfully');
       return next();
     })
-    .catch(err => {
+    .catch((err) => {
       return next({
         log: 'Error occured in artistController.createCampaign',
         status: 400,
@@ -134,11 +133,11 @@ artistController.editCampaign = (req, res, next) => {
 
   // query campaign db for campaign data, return data to server thru locals.campaignData
   db.query(retrieveCampaign, id)
-    .then(result => {
+    .then((result) => {
       res.locals.campaignData = result.rows[0];
       return next();
     })
-    .catch(err => {
+    .catch((err) => {
       return next({
         log: 'Error occured in artistController.createCampaign',
         status: 400,
@@ -165,10 +164,10 @@ artistController.updateCampaign = (req, res, next) => {
     req.body.bio
   ];
   db.query(updateCampaign, params)
-    .then(result => {
+    .then((result) => {
       return next();
     }) // result from query isn't needed when updating
-    .catch(err => {
+    .catch((err) => {
       return next({
         log: 'Error occured in userController.createCampaign',
         status: 400,
@@ -180,11 +179,11 @@ artistController.updateCampaign = (req, res, next) => {
 artistController.getDashboard = (req, res, next) => {
   const id = req.params.id;
   db.query(getDashboardQuery, [id])
-    .then(data => {
+    .then((data) => {
       res.locals.campaignData = data.rows;
       return next();
     })
-    .catch(err => {
+    .catch((err) => {
       x;
       return next({
         log: 'Error occured in artistController.getDashboard',

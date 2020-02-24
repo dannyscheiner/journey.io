@@ -1,3 +1,4 @@
+// Allows the entire app to access the variables held in the .env file
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
@@ -24,7 +25,7 @@ app.get('/getCampaigns', userController.getCampaigns, (req, res) => {
 //  middleware for grabbing and sending location to database from user inputs
 // app.post('/:artist');
 
-//  index.html
+// get request to index.html
 app.get('/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
@@ -37,7 +38,7 @@ app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 400,
-    message: { err: 'An error occurred' },
+    message: { err: 'An error occurred' }
   };
   const errorObj = Object.assign({}, defaultErr, err);
   return res.status(errorObj.status).json(errorObj.message);

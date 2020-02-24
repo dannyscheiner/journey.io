@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import MarkerClusterer from '@google/markerclusterer';
 
+// Located on the user view of the artist campaign page (Campaign.jsx), the map component gives the artist and the fan a way to visualize where the demand is.
+
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const location = {
@@ -36,8 +38,8 @@ class GoogleMap extends Component {
     script.async = true;
     document.body.appendChild(script);
     fetch(`http://ip-api.com/json/`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const defaultLocation = {
           lat: data.lat,
           lng: data.lon
@@ -51,7 +53,7 @@ class GoogleMap extends Component {
     this.googleRef = maps;
     let markers =
       locationArray &&
-      locationArray.map(location => {
+      locationArray.map((location) => {
         return new this.googleRef.Marker({ position: location });
       });
     let markerCluster = new MarkerClusterer(map, markers, {
