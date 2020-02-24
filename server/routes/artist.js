@@ -1,12 +1,12 @@
 /* eslint-disable function-paren-newline */
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
 
-const artistController = require("../controllers/artistController");
+const artistController = require('../controllers/artistController');
 
 router.post(
-  "/login",
+  '/login',
   artistController.loginUser,
   artistController.setCookie,
   (req, res) => {
@@ -15,7 +15,7 @@ router.post(
 );
 
 router.post(
-  "/signup",
+  '/signup',
   artistController.createUser,
   artistController.setCookie,
   (req, res) => {
@@ -23,15 +23,15 @@ router.post(
   }
 );
 
-router.get("/dashboard/:id", artistController.getDashboard, (req, res) => {
+router.get('/dashboard/:id', artistController.getDashboard, (req, res) => {
   return res.status(200).json({ campaigns: res.locals.campaignData });
 });
 
-router.post("/createcampaign", artistController.createCampaign, (req, res) => {
-  return res.sendStatus(200);
+router.post('/createcampaign', artistController.createCampaign, (req, res) => {
+  return res.status(200).json('Successful Campaign Creation');
 });
 
-router.post("/editcampaign", artistController.editCampaign, (req, res) => {
+router.post('/editcampaign', artistController.editCampaign, (req, res) => {
   return res.status(200).json(res.locals.campaignData);
 });
 
