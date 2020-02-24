@@ -1,4 +1,4 @@
-const db = require('../models/dataModels.js');
+const db = require('../models/dataModels');
 const moment = require('moment-timezone');
 
 const artistController = {};
@@ -31,7 +31,7 @@ artistController.createUser = (req, res, next) => {
     req.body.username,
     req.body.password,
     req.body.location,
-    today
+    today,
   ])
     .then(data => {
       res.locals.userId = data.rows[0].id;
@@ -39,9 +39,9 @@ artistController.createUser = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.createUser',
+        log: 'Error occured in artistController.createUser',
         status: 400,
-        message: { err: err.detail }
+        message: { err: err },
       });
     });
 };
@@ -58,9 +58,9 @@ artistController.loginUser = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.loginUser',
+        log: 'Error occured in artistController.loginUser',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -77,7 +77,7 @@ artistController.setCookie = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.setCookie',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -111,7 +111,7 @@ artistController.createCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
 
   db.query(createCampaignQuery, params)
@@ -121,9 +121,9 @@ artistController.createCampaign = (req, res, next) => {
     })
     .catch(error => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { error: error.detail }
+        message: { error: error.detail },
       });
     });
 };
@@ -141,9 +141,9 @@ artistController.editCampaign = (req, res, next) => {
     })
     .catch(error => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { error: error.detail }
+        message: { error: error.detail },
       });
     });
 };
@@ -163,16 +163,16 @@ artistController.updateCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
 
   db.query(updateCampaign, params)
     .then(result => next()) // result from query isn't needed when updating
     .catch(e => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { error: error.detail }
+        message: { error: error.detail },
       });
     });
 };
@@ -188,7 +188,7 @@ artistController.getDashboard = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.getDashboard',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
