@@ -15,19 +15,27 @@ class Dashboard extends Component {
       campaigns: [],
       currentCampaign: {},
       showEditModal: false,
-      showCreateModal: false
+      showCreateModal: false,
     };
     this.assignCurrentCampaign = this.assignCurrentCampaign.bind(this);
     this.toggleCreateModal = this.toggleCreateModal.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.loadArtistCampaigns = this.loadArtistCampaigns.bind(this);
+    this.deactivateCampaign = this.deactivateCampaign.bind(this);
   }
+
+  componentDidMount() {
+    this.loadArtistCampaigns();
+  }
+
   toggleCreateModal(show) {
     this.setState({ showCreateModal: show });
   }
+
   toggleEditModal(show) {
     this.setState({ showEditModal: show });
   }
+
   assignCurrentCampaign(id) {
     let currentCampaign = {};
     this.state.campaigns.forEach(campaign => {
@@ -37,23 +45,37 @@ class Dashboard extends Component {
     });
     this.setState({ currentCampaign, showEditModal: true });
   }
+
   loadArtistCampaigns() {
-    fetch('/artist/dashboard/' + this.props.artistId)
+    fetch('/artist/dashboard/')
       .then(data => data.json())
       .then(res => {
         //all modals should be turned off upon any actions
         this.setState({
           campaigns: res.campaigns,
           showEditModal: false,
-          showCreateModal: false
+          showCreateModal: false,
         });
       })
       .catch(err => {
         console.log('Error retrieving campaigns: ', err);
       });
   }
-  componentDidMount() {
-    this.loadArtistCampaigns();
+
+  deactivateCampaign(campaignId) {
+    fetch('/artist/deactivatecampaign', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: campaignId }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        this.loadArtistCampaigns();
+      })
+      .catch(err => {
+        console.log('Error deactivating campaign: ', err);
+      });
   }
 
   render() {
@@ -66,6 +88,7 @@ class Dashboard extends Component {
             id={campaign.id}
             name={campaign.name}
             onClick={this.assignCurrentCampaign}
+            deactivate={this.deactivateCampaign}
           />
         );
       } else {
