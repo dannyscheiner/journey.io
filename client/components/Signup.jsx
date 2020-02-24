@@ -7,8 +7,7 @@ class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signupVerify: false,
-      id: ''
+      signupVerify: false
     };
 
     this.createUser = this.createUser.bind(this);
@@ -30,7 +29,7 @@ class Signup extends Component {
       .then(data => data.json())
       .then(res => {
         this.props.updateState(res.id);
-        this.setState({ signupVerify: true, id: res.id });
+        this.setState({ signupVerify: true });
       })
       .catch(err => {
         console.log('Signup ERROR: ', err);

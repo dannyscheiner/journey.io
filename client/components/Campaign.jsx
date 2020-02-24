@@ -83,8 +83,6 @@ class LocationSearchInput extends React.Component {
 }
 
 const Campaign = props => {
-  console.log(props.artistId);
-  console.log(props.campaignId);
   const [campaignData, updateCampaignData] = useState({});
   useEffect(() => {
     fetch('/editcampaign', {

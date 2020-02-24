@@ -53,7 +53,6 @@ class Dashboard extends Component {
       });
   }
   componentDidMount() {
-    console.log('mounting');
     this.loadArtistCampaigns();
   }
 
