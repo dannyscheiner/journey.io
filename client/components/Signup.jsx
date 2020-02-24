@@ -8,6 +8,7 @@ class Signup extends Component {
     super(props);
     this.state = {
       signupVerify: false,
+      id: ''
     };
 
     this.createUser = this.createUser.bind(this);
@@ -23,13 +24,13 @@ class Signup extends Component {
         name: e.target.createNameInput.value,
         username: e.target.createUsernameInput.value,
         password: e.target.createPasswordInput.value,
-        location: e.target.createLocationInput.value,
-      }),
+        location: e.target.createLocationInput.value
+      })
     })
       .then(data => data.json())
       .then(res => {
         this.props.updateState(res.id);
-        this.setState({ signupVerify: true });
+        this.setState({ signupVerify: true, id: res.id });
       })
       .catch(err => {
         console.log('Signup ERROR: ', err);
@@ -37,8 +38,8 @@ class Signup extends Component {
   }
 
   render() {
-    if (this.state.signinVerify) {
-      return <Redirect to="/" />;
+    if (this.state.signupVerify) {
+      return <Redirect to="/dashboard" />;
     }
     return (
       <Form className="signup" onSubmit={this.createUser}>
