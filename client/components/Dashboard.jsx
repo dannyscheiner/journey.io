@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import { Jumbotron, Button } from 'react-bootstrap';
 
@@ -16,10 +15,15 @@ class Dashboard extends Component {
       currentCampaign: {},
       showEditModal: false,
       showCreateModal: false,
+      showDetailsModal: false,
     };
     this.assignCurrentCampaign = this.assignCurrentCampaign.bind(this);
+    this.assignCurrentCampaignDetails = this.assignCurrentCampaignDetails.bind(
+      this,
+    );
     this.toggleCreateModal = this.toggleCreateModal.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.toggleDetailsModal = this.toggleDetailsModal.bind(this);
     this.loadArtistCampaigns = this.loadArtistCampaigns.bind(this);
     this.deactivateCampaign = this.deactivateCampaign.bind(this);
   }
@@ -36,6 +40,10 @@ class Dashboard extends Component {
     this.setState({ showEditModal: show });
   }
 
+  toggleDetailsModal(show) {
+    this.setState({ showDetailsModal: show });
+  }
+
   assignCurrentCampaign(id) {
     let currentCampaign = {};
     this.state.campaigns.forEach(campaign => {
@@ -44,6 +52,16 @@ class Dashboard extends Component {
       }
     });
     this.setState({ currentCampaign, showEditModal: true });
+  }
+
+  assignCurrentCampaignDetails(id) {
+    let currentCampaign = {};
+    this.state.campaigns.forEach(campaign => {
+      if (id === campaign.id) {
+        currentCampaign = campaign;
+      }
+    });
+    this.setState({ currentCampaign, showDetailsModal: true });
   }
 
   loadArtistCampaigns() {
@@ -87,7 +105,10 @@ class Dashboard extends Component {
             key={campaign.id}
             id={campaign.id}
             name={campaign.name}
+            show={this.state.showDetailsModal}
             onClick={this.assignCurrentCampaign}
+            showDetails={this.assignCurrentCampaignDetails}
+            toggleDetailsModal={this.toggleDetailsModal}
             deactivate={this.deactivateCampaign}
           />
         );

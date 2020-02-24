@@ -19,7 +19,7 @@ const getDashboardQuery =
   'SELECT * FROM campaign WHERE artist_id=$1 ORDER BY active DESC, id DESC';
 const deactivateCampaignQuery = 'UPDATE campaign SET active=false WHERE id=$1';
 const getCitiesQuery =
-  'SELECT COUNT(id) AS total, DISTINCT location FROM datapoint WHERE campaign_id=$1';
+  'SELECT DISTINCT location FROM datapoint WHERE campaign_id=$1';
 const getCityCountsQuery =
   'SELECT COUNT(id) FROM datapoint WHERE campaign_id=$1 AND location=$2';
 const getLatLongQuery = 'SELECT lat, long FROM datapoint WHERE campaign_id=$1';
