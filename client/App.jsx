@@ -18,7 +18,8 @@ class App extends Component {
     super(props);
     this.state = {
       id: '',
-      activeCampaigns: []
+      artistName: '',
+      activeCampaigns: [],
     };
 
     this.updateId = this.updateId.bind(this);
@@ -35,8 +36,8 @@ class App extends Component {
       });
   }
 
-  updateId(artistId) {
-    this.setState({ id: artistId });
+  updateId(artistId, artistName) {
+    this.setState({ id: artistId, artistName: artistName });
   }
 
   render() {
@@ -53,6 +54,7 @@ class App extends Component {
               <Campaign
                 {...props}
                 artistId={obj.artist_id}
+                artistName={obj.artist}
                 campaignId={obj.campaign_id}
               />
             )}
@@ -60,34 +62,38 @@ class App extends Component {
         );
       });
       return (
-        <div className='router'>
+        <div className="router">
           <main>
             <Switch>
-              <Route exact path='/' component={Homepage} />
+              <Route exact path="/" component={Homepage} />
               <Route
                 exact
-                path='/login'
+                path="/login"
                 render={props => (
                   <Login {...props} updateState={this.updateId} />
                 )}
               />
               <Route
                 exact
-                path='/signup'
+                path="/signup"
                 render={props => (
                   <Signup {...props} updateState={this.updateId} />
                 )}
               />
               <Route
                 exact
-                path='/dashboard'
+                path="/dashboard"
                 render={props => (
-                  <Dashboard {...props} artistId={this.state.id} />
+                  <Dashboard
+                    {...props}
+                    artistId={this.state.id}
+                    artistName={this.state.artistName}
+                  />
                 )}
               />
               <Route
                 exact
-                path='/createcampaign'
+                path="/createcampaign"
                 render={props => (
                   <CreateCampaign {...props} artistId={this.state.id} />
                 )}
@@ -99,39 +105,43 @@ class App extends Component {
       );
     }
     return (
-      <div className='router'>
+      <div className="router">
         <main>
           <Switch>
-            <Route exact path='/' component={Homepage} />
+            <Route exact path="/" component={Homepage} />
             <Route
               exact
-              path='/login'
+              path="/login"
               render={props => <Login {...props} updateState={this.updateId} />}
             />
             <Route
               exact
-              path='/signup'
+              path="/signup"
               render={props => (
                 <Signup {...props} updateState={this.updateId} />
               )}
             />
             <Route
               exact
-              path='/dashboard'
+              path="/dashboard"
               render={props => (
-                <Dashboard {...props} artistId={this.state.id} />
+                <Dashboard
+                  {...props}
+                  artistId={this.state.id}
+                  artistName={this.state.artistName}
+                />
               )}
             />
             <Route
               exact
-              path='/createcampaign'
+              path="/createcampaign"
               render={props => (
                 <CreateCampaign {...props} artistId={this.state.id} />
               )}
             />
             <Route
               exact
-              path='/editcampaign'
+              path="/editcampaign"
               render={props => (
                 <EditCampaign {...props} artistId={this.state.id} />
               )}

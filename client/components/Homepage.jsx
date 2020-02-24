@@ -14,33 +14,33 @@ class Homepage extends Component {
   render() {
     return (
       <div
-        className='homepage'
+        className="homepage"
         style={{
-          textAlign: 'center'
+          textAlign: 'center',
         }}
       >
-        <Navbar bg='dark' variant='dark'>
-          <Navbar.Brand href='#home'>journey</Navbar.Brand>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">journey</Navbar.Brand>
         </Navbar>
         {/* LOG IN CARD */}
         <div
-          className='cards-divs'
+          className="cards-divs"
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            padding: '50px'
+            padding: '50px',
           }}
         >
           <Card style={{ width: '18rem' }}>
-            <Card.Img variant='top' />
+            <Card.Img variant="top" />
             <Card.Body>
               <Card.Title>Login</Card.Title>
               <Card.Text>
                 Already signed up as an artist? Visit your dashboard here to
                 view metrics, and create or edit campaigns.
               </Card.Text>
-              <Link to='/login'>
-                <Button variant='primary'>Login</Button>
+              <Link to="/login">
+                <Button variant="primary">Login</Button>
               </Link>
               {/* <a id='login-btn' href='/login'>
                 <Button variant='primary'>Login</Button>
@@ -50,15 +50,15 @@ class Homepage extends Component {
 
           {/* SIGN UP CARD */}
           <Card style={{ width: '18rem' }}>
-            <Card.Img variant='top' />
+            <Card.Img variant="top" />
             <Card.Body>
               <Card.Title>Signup</Card.Title>
               <Card.Text>
                 Not signed up as an artist yet? No problem! Sign up quickly to
                 start a campaign in just minutes.
               </Card.Text>
-              <Link to='/signup'>
-                <Button variant='primary'>Signup</Button>
+              <Link to="/signup">
+                <Button variant="primary">Signup</Button>
               </Link>
               {/* <a id='signup-btn' href='/signup'>
                 <Button variant='primary'>Signup</Button>
@@ -68,7 +68,7 @@ class Homepage extends Component {
 
           {/* USER CARD */}
           <Card style={{ width: '18rem' }}>
-            <Card.Img variant='top' />
+            <Card.Img variant="top" />
             <Card.Body>
               <Card.Title>Want to Request Your Artist in Your City?</Card.Title>
               <Card.Text>

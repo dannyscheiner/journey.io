@@ -28,7 +28,7 @@ class Login extends Component {
     })
       .then(data => data.json())
       .then(res => {
-        this.props.updateState(res.id);
+        this.props.updateState(res.id, res.name);
         this.setState({ loginVerify: true, loginError: '' });
       })
       .catch(err => {
