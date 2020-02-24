@@ -11,6 +11,7 @@ import Dashboard from './components/Dashboard';
 import Campaign from './components/Campaign';
 import CreateCampaign from './components/CreateCampaign';
 import EditCampaign from './components/EditCampaign';
+import './style.css';
 
 class App extends Component {
   constructor(props) {
