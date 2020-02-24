@@ -9,7 +9,7 @@ router.get('/getCampaigns', userController.getCampaigns, (req, res) => {
 
 // submit location data for user interest
 router.post('/campaign', userController.submitInterest, (req, res) => {
-  res.status(200);
+  res.status(200).json('success adding interest');
 });
 
 // router.get('/campaign')

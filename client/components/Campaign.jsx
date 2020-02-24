@@ -17,19 +17,22 @@ class Campaign extends React.Component {
   }
   submitInterest = e => {
     const interestSubmissionBody = {
-      id: this.props.campaignId,
+      campaignId: this.props.campaignId,
       lat: this.state.coordinates.lat,
       lng: this.state.coordinates.lng,
       location: this.state.address
     };
     fetch('/user/campaign/', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ interestSubmissionBody })
+      body: JSON.stringify(interestSubmissionBody)
     })
       .then(res => res.json())
       .then(response => {
+        console.log(response);
+
         this.setState({ hasSubmitted: true });
         console.log('Success submitting interest');
       })
@@ -58,12 +61,13 @@ class Campaign extends React.Component {
       .catch(error => console.error('Error', error));
   };
   render() {
-    console.log(this.state);
+    console.log('state', this.state);
     return (
       <>
         <LocationSearchInput
           submitInterest={this.submitInterest}
           handleChange={this.handleChange}
+          handleSelect={this.handleSelect}
           submitInterest={this.submitInterest}
           address={this.state.address}
         />

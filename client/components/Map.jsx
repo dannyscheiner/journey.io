@@ -67,7 +67,6 @@ class GoogleMap extends Component {
   }
 
   render() {
-    console.log(this.state.defaultLocation);
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '70vh', width: '70%' }}>
