@@ -1,8 +1,6 @@
 /* eslint-disable function-paren-newline */
 const express = require('express');
-
 const router = express.Router();
-
 const artistController = require('../controllers/artistController');
 
 // api for artist to send login
@@ -16,7 +14,7 @@ router.post('/signup', artistController.createUser, artistController.setCookie, 
 });
 
 // api to access the artist's personal dashboard after sign-in
-router.get('/dashboard/:id', artistController.getDashboard, (req, res) => {
+router.get('/dashboard', artistController.getDashboard, (req, res) => {
   return res.status(200).json({ campaigns: res.locals.campaignData });
 });
 
@@ -33,6 +31,10 @@ router.post('/editcampaign', artistController.editCampaign, (req, res) => {
 // api for artist to update their campaign information in the db
 router.post('/updateCampaign', artistController.updateCampaign, (req, res) => {
   return res.status(200).json('Successful Campaign Update');
+});
+
+router.patch('/deactivatecampaign', artistController.deactivateCampaign, (req, res) => {
+  return res.status(200).json('Campaign successfully deactivated');
 });
 
 module.exports = router;

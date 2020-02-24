@@ -14,7 +14,15 @@ const createCampaignQuery =
 const retrieveCampaign = 'SELECT * FROM campaign WHERE id = $1 AND active = true';
 const updateCampaign =
   'UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11 WHERE id = $1 AND active = true';
-const getDashboardQuery = 'SELECT * FROM campaign WHERE artist_id=$1';
+const getDashboardQuery =
+  'SELECT * FROM campaign WHERE artist_id=$1 ORDER BY active DESC, id DESC';
+const deactivateCampaignQuery = 'UPDATE campaign SET active=false WHERE id=$1';
+const getCitiesQuery =
+  'SELECT COUNT(id) AS total, DISTINCT location FROM datapoint WHERE campaign_id=$1';
+const getCityCountsQuery =
+  'SELECT COUNT(id) FROM datapoint WHERE campaign_id=$1 AND location=$2';
+const getLatLongQuery = 'SELECT lat, long FROM datapoint WHERE campaign_id=$1';
+
 // used for query data populating
 
 const today = moment(new Date())
@@ -29,7 +37,7 @@ artistController.createUser = (req, res, next) => {
     req.body.username,
     req.body.password,
     req.body.location,
-    today
+    today,
   ])
     .then((data) => {
       res.locals.userId = data.rows[0].id;
@@ -39,7 +47,7 @@ artistController.createUser = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.createUser',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -58,7 +66,7 @@ artistController.loginUser = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.loginUser',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -75,7 +83,7 @@ artistController.setCookie = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.setCookie',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
@@ -100,7 +108,7 @@ artistController.createCampaign = (req, res, next) => {
   const params = [
     req.body.artist_id, // passed in from state
     req.body.name,
-    true, // campaign defaults to active
+    true, // campaign defaults to active during creation
     req.body.video,
     req.body.facebook,
     req.body.twitter,
@@ -109,7 +117,7 @@ artistController.createCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
 
   db.query(createCampaignQuery, params)
@@ -121,7 +129,7 @@ artistController.createCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { error: err.detail }
+        message: { error: err.detail },
       });
     });
 };
@@ -141,7 +149,7 @@ artistController.editCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { err: err.detail }
+        message: { err: err.detail },
       });
     });
 };
@@ -161,7 +169,7 @@ artistController.updateCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio
+    req.body.bio,
   ];
   db.query(updateCampaign, params)
     .then((result) => {
@@ -171,13 +179,13 @@ artistController.updateCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in userController.createCampaign',
         status: 400,
-        message: { error: err.detail }
+        message: { error: err.detail },
       });
     });
 };
 
 artistController.getDashboard = (req, res, next) => {
-  const id = req.params.id;
+  const id = req.cookies.artistI;
   db.query(getDashboardQuery, [id])
     .then((data) => {
       res.locals.campaignData = data.rows;
@@ -188,11 +196,25 @@ artistController.getDashboard = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.getDashboard',
         status: 400,
-        message: { err: err }
+        message: { err: err },
       });
     });
 };
 
 // submit updated inputs from edit campaign to update campaign db
+
+artistController.deactivateCampaign = (req, res, next) => {
+  db.query(deactivateCampaignQuery, [req.body.id])
+    .then(result => {
+      return next();
+    })
+    .catch(err => {
+      return next({
+        log: 'Error occured in userController.createCampaign',
+        status: 400,
+        message: { error: err.detail },
+      });
+    });
+};
 
 module.exports = artistController;

@@ -7,14 +7,23 @@ import { Card, Button } from 'react-bootstrap';
 // Props are being passed down from the Dashboard Component
 // name and id relate to campaign.id and campaign.name
 // onClick, t
-const ActiveCard = ({ name, id, onClick }) => {
+const ActiveCard = ({ name, id, onClick, deactivate }) => {
   //card display
   return (
-    <Card style={{ width: '20rem' }}>
+    <Card style={{ width: '25rem' }}>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className='activeCard'>Active</Card.Subtitle>
         <div className='buttons'>
+          <Button
+            type='submit'
+            variant='danger'
+            onClick={() => {
+              deactivate(id);
+            }}
+          >
+            Deactivate
+          </Button>
           <Button
             type='submit'
             variant='info'
@@ -25,7 +34,7 @@ const ActiveCard = ({ name, id, onClick }) => {
             Edit
           </Button>
           <Button type='submit' variant='outline-info'>
-            View Metrics
+            View Details
           </Button>
         </div>
       </Card.Body>

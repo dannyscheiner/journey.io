@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('/getCampaigns')
+    fetch('/user/getCampaigns')
       .then((data) => data.json())
       .then((res) => {
         this.setState({ activeCampaigns: res.campaigns });
