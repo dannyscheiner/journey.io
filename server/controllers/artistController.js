@@ -15,7 +15,8 @@ const retrieveCampaign =
   'SELECT * FROM campaign WHERE id = $1 AND active = true';
 const updateCampaign =
   'UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11 WHERE id = $1 AND active = true';
-const getDashboardQuery = 'SELECT * FROM campaign WHERE artist_id=$1';
+const getDashboardQuery =
+  'SELECT * FROM campaign WHERE artist_id=$1 ORDER BY active DESC, id DESC';
 const deactivateCampaignQuery = 'UPDATE campaign SET active=false WHERE id=$1';
 const getCitiesQuery =
   'SELECT COUNT(id) AS total, DISTINCT location FROM datapoint WHERE campaign_id=$1';
@@ -108,7 +109,7 @@ artistController.createCampaign = (req, res, next) => {
   const params = [
     req.body.artist_id, // passed in from state
     req.body.name,
-    true, // campaign defaults to active
+    true, // campaign defaults to active during creation
     req.body.video,
     req.body.facebook,
     req.body.twitter,
