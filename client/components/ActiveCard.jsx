@@ -7,6 +7,7 @@ import Details from './Details';
 const ActiveCard = ({
   id,
   name,
+  artistName,
   show,
   onClick,
   showDetails,
@@ -19,6 +20,12 @@ const ActiveCard = ({
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className="activeCard">Active</Card.Subtitle>
+        <Card.Subtitle>
+          Link:
+          <a href={window.location.origin + '/' + artistName + '/' + name}>
+            {window.location.origin + '/' + artistName + '/' + name}
+          </a>
+        </Card.Subtitle>
         <div className="buttons">
           <Button
             type="submit"

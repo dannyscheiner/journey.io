@@ -6,7 +6,7 @@ const artistController = {};
 //////////// QUERIES ///////////////
 const signupQuery =
   'INSERT INTO artist (name, username, password, location, join_date) VALUES ($1, $2, $3, $4, $5) RETURNING id';
-const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
+const loginQuery = 'SELECT name, password, id FROM artist WHERE username=$1';
 const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
 const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
 const createCampaignQuery =
@@ -57,7 +57,8 @@ artistController.loginUser = (req, res, next) => {
   db.query(loginQuery, [req.body.username])
     .then(dbPw => {
       if (dbPw.rows[0].password === req.body.password) {
-        res.locals.userId = dbPw.rows[0].id;
+        res.locals.artistId = dbPw.rows[0].id;
+        res.locals.artistName = dbPw.rows[0].name;
         return next();
       } else {
         res.status(400).send('Invalid username/password');
@@ -74,8 +75,8 @@ artistController.loginUser = (req, res, next) => {
 
 artistController.setCookie = (req, res, next) => {
   const random = Math.floor(Math.random() * 999).toString();
-  res.cookie('artistI', res.locals.userId, { httpOnly: true });
-  res.cookie('cookie', random, { httpOnly: true });
+  res.cookie('artistI', res.locals.artistId, { httpOnly: true });
+  res.cookie('cookie', random, { httpOnly: true, overwrite: true });
   db.query(updateCookie, [random, res.locals.userId])
     .then(res => {
       return next();
@@ -90,11 +91,11 @@ artistController.setCookie = (req, res, next) => {
 };
 
 artistController.verifyCookie = (req, res, next) => {
-  if (!req.cookies.toDoI || !req.cookies.cookie) {
+  if (!req.cookies.artistI || !req.cookies.cookie) {
     res.locals.verify = false;
     return next();
   }
-  db.query(verifyCookie, [req.cookies.toDoI]).then(verif => {
+  db.query(verifyCookie, [req.cookies.artistI]).then(verif => {
     if (verif.rows[0].cookie == req.cookies.cookie) {
       res.locals.verify = true;
       return next();
@@ -148,7 +149,7 @@ artistController.editCampaign = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in artistController.createCampaign',
+        log: 'Error occured in artistController.editCampaign',
         status: 400,
         message: { err: err.detail },
       });
@@ -178,7 +179,7 @@ artistController.updateCampaign = (req, res, next) => {
     }) // result from query isn't needed when updating
     .catch(err => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.updateCampaign',
         status: 400,
         message: { error: err.detail },
       });
@@ -193,7 +194,6 @@ artistController.getDashboard = (req, res, next) => {
       return next();
     })
     .catch(err => {
-      x;
       return next({
         log: 'Error occured in artistController.getDashboard',
         status: 400,
@@ -211,11 +211,39 @@ artistController.deactivateCampaign = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.deactivateCampaign',
         status: 400,
         message: { error: err.detail },
       });
     });
+};
+
+artistController.getCampaignDetails = async (req, res, next) => {
+  try {
+    const cities = await db.query(getCitiesQuery, [req.params.id]);
+    const details = [];
+    let total = 0;
+    for (let i = 0; i < cities.rows.length; i++) {
+      const data = await db.query(getCityCountsQuery, [
+        req.params.id,
+        cities.rows[i].location,
+      ]);
+      total += +data.rows[0].count;
+      details.push({
+        city: cities.rows[i].location,
+        count: +data.rows[0].count,
+      });
+    }
+    details.push({ total: total });
+    res.locals.campaign.details = details;
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error occured in artistController.getCampaignDetails',
+      status: 400,
+      message: { error: err.detail },
+    });
+  }
 };
 
 module.exports = artistController;

@@ -11,6 +11,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      artistName: this.props.artistName,
       campaigns: [],
       currentCampaign: {},
       showEditModal: false,
@@ -105,6 +106,7 @@ class Dashboard extends Component {
             key={campaign.id}
             id={campaign.id}
             name={campaign.name}
+            artistName={this.state.artistName}
             show={this.state.showDetailsModal}
             onClick={this.assignCurrentCampaign}
             showDetails={this.assignCurrentCampaignDetails}
@@ -118,7 +120,10 @@ class Dashboard extends Component {
             key={campaign.id}
             id={campaign.id}
             name={campaign.name}
+            show={this.state.showDetailsModal}
             onClick={this.assignCurrentCampaign}
+            showDetails={this.assignCurrentCampaignDetails}
+            toggleDetailsModal={this.toggleDetailsModal}
           />
         );
       }

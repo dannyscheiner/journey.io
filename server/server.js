@@ -13,12 +13,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-//  route for creating/editing artist campaigns
+//  routes for creating/editing artist campaigns
 app.use('/artist', artistRouter);
-
-//  middleware for grabbing and sending location to database from user inputs
 app.use('/user', userRouter);
-
 
 //  index.html
 app.get('/*', (req, res) => {
