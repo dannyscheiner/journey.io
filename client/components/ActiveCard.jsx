@@ -5,7 +5,7 @@ import { Card, Button } from 'react-bootstrap';
 const ActiveCard = ({ name, id, onClick, deactivate }) => {
   //card display
   return (
-    <Card style={{ width: '30rem' }}>
+    <Card style={{ width: '25rem' }}>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className="activeCard">Active</Card.Subtitle>
