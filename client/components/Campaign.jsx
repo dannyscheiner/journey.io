@@ -71,7 +71,7 @@ class Campaign extends React.Component {
           submitInterest={this.submitInterest}
           address={this.state.address}
         />
-        <Map />
+        <Map markers={this.state.markers} campaignId={this.props.campaignId} />
       </>
     );
   }

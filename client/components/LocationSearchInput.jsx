@@ -33,15 +33,17 @@ const LocationSearchInput = props => {
   };
 
   return (
-    <PlacesAutocomplete
-      value={props.address}
-      onChange={props.handleChange}
-      onSelect={props.handleSelect}
-      // Pass the search options prop
-      searchOptions={searchOptions}
-    >
-      {renderInput}
-    </PlacesAutocomplete>
+    <div style={{ width: '50%' }}>
+      <PlacesAutocomplete
+        value={props.address}
+        onChange={props.handleChange}
+        onSelect={props.handleSelect}
+        // Pass the search options prop
+        searchOptions={searchOptions}
+      >
+        {renderInput}
+      </PlacesAutocomplete>
+    </div>
   );
 };
 
