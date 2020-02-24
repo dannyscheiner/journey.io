@@ -13,7 +13,7 @@ userController.getCampaigns = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in getCampaigns',
+        log: 'Error occured in userController.getCampaigns',
         status: 400,
         message: { err: err },
       });

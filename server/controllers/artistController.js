@@ -39,7 +39,7 @@ artistController.createUser = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.createUser',
+        log: 'Error occured in artistController.createUser',
         status: 400,
         message: { err: err },
       });
@@ -58,7 +58,7 @@ artistController.loginUser = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: 'Error occured in userController.loginUser',
+        log: 'Error occured in artistController.loginUser',
         status: 400,
         message: { err: err },
       });
@@ -121,7 +121,7 @@ artistController.createCampaign = (req, res, next) => {
     })
     .catch(error => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
         message: { error: error.detail },
       });
@@ -141,7 +141,7 @@ artistController.editCampaign = (req, res, next) => {
     })
     .catch(error => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
         message: { error: error.detail },
       });
@@ -170,7 +170,7 @@ artistController.updateCampaign = (req, res, next) => {
     .then(result => next()) // result from query isn't needed when updating
     .catch(e => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.createCampaign',
         status: 400,
         message: { error: error.detail },
       });

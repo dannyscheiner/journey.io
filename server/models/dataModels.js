@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const PG_URL = '';
+const PG_URL = process.env.PG_URL;
 
 console.log('pgurl', PG_URL);
 const pool = new Pool({
