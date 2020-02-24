@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import Campaign from './components/Campaign';
 import CreateCampaign from './components/CreateCampaign';
+import EditCampaign from './components/EditCampaign';
 
 class App extends Component {
   constructor(props) {
@@ -97,35 +98,34 @@ class App extends Component {
       );
     }
     return (
-      <div className="router">
+      <div className='router'>
         <main>
           <Switch>
-            <Route exact path="/" component={Homepage} />
+            <Route exact path='/' component={Homepage} />
             <Route
               exact
-              path="/login"
-              render={props => <Login {...props} updateState={this.updateId} />}
+              path='/login'
+              render={(props) => <Login {...props} updateState={this.updateId} />}
             />
             <Route
               exact
-              path="/signup"
-              render={props => (
-                <Signup {...props} updateState={this.updateId} />
-              )}
+              path='/signup'
+              render={(props) => <Signup {...props} updateState={this.updateId} />}
             />
             <Route
               exact
-              path="/dashboard"
-              render={props => (
-                <Dashboard {...props} artistId={this.state.id} />
-              )}
+              path='/dashboard'
+              render={(props) => <Dashboard {...props} artistId={this.state.id} />}
             />
             <Route
               exact
-              path="/createcampaign"
-              render={props => (
-                <CreateCampaign {...props} artistId={this.state.id} />
-              )}
+              path='/createcampaign'
+              render={(props) => <CreateCampaign {...props} artistId={this.state.id} />}
+            />
+            <Route
+              exact
+              path='/editcampaign'
+              render={(props) => <EditCampaign {...props} artistId={this.state.id} />}
             />
           </Switch>
         </main>

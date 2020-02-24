@@ -3,7 +3,8 @@ import React, { useState, Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Modal, Form, Button } from 'react-bootstrap';
 
-const CreateCampaignComponent = props => {
+const CreateCampaignComponent = (props) => {
+  console.log(props.artistId);
   const [spotifyWarning, setWarning] = useState(false);
   const warningText = spotifyWarning ? 'Please include a link to Spotify' : '';
   const createCampaign = e => {
@@ -26,20 +27,19 @@ const CreateCampaignComponent = props => {
       spotify: e.target.spotifyInput.value,
       bio: e.target.bioInput.value
     };
+
     fetch('/artist/createcampaign', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(campaignData)
-    })
-      .then(response => response.json())
+    }).then(response => response.json())
       .then(campaignData => {
         console.log('Successful submission', campaignData);
         props.loadArtistCampaigns();
       })
       .catch(error => {
-        console.log('err');
         console.log('Error', error);
       });
   };

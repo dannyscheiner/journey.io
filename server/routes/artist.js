@@ -35,8 +35,8 @@ router.post('/editcampaign', artistController.editCampaign, (req, res) => {
   return res.status(200).json(res.locals.campaignData);
 });
 
-// router.post("/updateCampaign", artistController.updateCampaign, (req, res) => {
-//   return res.status(200).json(res.locals.campaignData);
-// });
+router.post('/updateCampaign', artistController.updateCampaign, (req, res) => {
+  return res.status(200).json(res.locals.campaignData);
+});
 
 module.exports = router;
