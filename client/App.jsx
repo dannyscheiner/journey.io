@@ -42,7 +42,20 @@ class App extends Component {
     if (activeCampaigns.length > 0) {
       const routes = activeCampaigns.map((obj, i) => {
         let pathStr = '/' + obj.artist + '/' + obj.campaign;
-        return <Route key={i} exact path={pathStr} component={Campaign} />;
+        return (
+          <Route
+            key={i}
+            exact
+            path={pathStr}
+            render={props => (
+              <Campaign
+                {...props}
+                artistId={obj.artist_id}
+                campaignId={obj.campaign_id}
+              />
+            )}
+          />
+        );
       });
       return (
         <div className="router">
