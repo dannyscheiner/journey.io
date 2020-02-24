@@ -2,24 +2,29 @@ import React from 'react';
 
 import { Card, Button } from 'react-bootstrap';
 
-const ActiveCard = ({ name }) => {
+const ActiveCard = ({ name, id, onClick }) => {
+  //card display
   return (
-    <>
-      <Card>
-        <Card.Body>
-          <Card.Title>{name}</Card.Title>
-          <Card.Subtitle className="activeCard">Active</Card.Subtitle>
-        </Card.Body>
-      </Card>
-      <div className="buttons">
-        <Button type="submit" variant="info">
-          Edit
-        </Button>
-        <Button type="submit" variant="outline-info">
-          View Metrics
-        </Button>
-      </div>
-    </>
+    <Card style={{ width: '20rem' }}>
+      <Card.Body>
+        <Card.Title>{name}</Card.Title>
+        <Card.Subtitle className="activeCard">Active</Card.Subtitle>
+        <div className="buttons">
+          <Button
+            type="submit"
+            variant="info"
+            onClick={() => {
+              onClick(id);
+            }}
+          >
+            Edit
+          </Button>
+          <Button type="submit" variant="outline-info">
+            View Metrics
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
   );
 };
 
