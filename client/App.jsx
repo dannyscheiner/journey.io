@@ -53,6 +53,7 @@ class App extends Component {
             render={props => (
               <Campaign
                 {...props}
+                artistName={obj.artist}
                 artistId={obj.artist_id}
                 artistName={obj.artist}
                 campaignId={obj.campaign_id}
