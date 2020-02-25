@@ -2,34 +2,35 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import MarkerClusterer from '@google/markerclusterer';
 
-// Located on the user view of the artist campaign page (Campaign.jsx), the map component gives the artist and the fan a way to visualize where the demand is.
-
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
-const location = {
-  lat: 34.0522,
-  lng: -118.244
-};
-const locationArray = [];
-
-for (let i = 0; i < 10; i++) {
-  if (i === 0) {
-    locationArray.push({ lat: location.lat + 0.01, lng: location.lng + 0.01 });
-  } else {
-    locationArray.push({
-      lat: locationArray[i - 1].lat + 0.01,
-      lng: locationArray[i - 1].lng + 0.01
-    });
-  }
-}
-
 class GoogleMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
       defaultLocation: {},
+      markers: [],
       zoom: 10
     };
+    this.loadMapData = this.loadMapData.bind(this);
+  }
+  loadMapData(defaultLocation) {
+    fetch(`/user/campaign/${this.props.campaignId}`)
+      .then(res => res.json())
+      .then(response => {
+        console.log(response);
+        const campaignData = response.locationData.map(el => {
+          return {
+            lat: Number(el.lat),
+            lng: Number(el.lng)
+          };
+        });
+        this.setState({
+          defaultLocation: defaultLocation,
+          markers: campaignData
+        });
+      })
+      .catch(err => {
+        console.log('error', err);
+      });
   }
   componentDidMount() {
     const script = document.createElement('script');
@@ -37,14 +38,16 @@ class GoogleMap extends Component {
       'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js';
     script.async = true;
     document.body.appendChild(script);
+    let defaultLocation;
     fetch(`http://ip-api.com/json/`)
-      .then((res) => res.json())
-      .then((data) => {
-        const defaultLocation = {
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        defaultLocation = {
           lat: data.lat,
           lng: data.lon
         };
-        this.setState({ defaultLocation: defaultLocation });
+        this.loadMapData(defaultLocation);
       });
   }
 
@@ -52,8 +55,8 @@ class GoogleMap extends Component {
     this.googleMapRef = map;
     this.googleRef = maps;
     let markers =
-      locationArray &&
-      locationArray.map((location) => {
+      this.state.markers &&
+      this.state.markers.map(location => {
         return new this.googleRef.Marker({ position: location });
       });
     let markerCluster = new MarkerClusterer(map, markers, {
@@ -71,7 +74,7 @@ class GoogleMap extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '70vh', width: '70%' }}>
+      <div style={{ height: '70vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_G_KEY }}
           center={this.state.defaultLocation}

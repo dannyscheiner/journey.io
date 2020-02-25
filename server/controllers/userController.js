@@ -31,6 +31,7 @@ userController.getCampaigns = (req, res, next) => {
 // Submits new entry to datapoint table with user location data
 userController.submitInterest = (req, res, next) => {
   const data = [req.body.location, req.body.campaignId, req.body.lat, req.body.lng];
+
   // This query inserts each expression of interest into the datapoint table
   db.query(submitInterestQuery, data)
     .then((result) => {
@@ -65,7 +66,7 @@ userController.retrieveCampaignLocationData = (req, res, next) => {
     })
     .catch((err) => {
       return next({
-        log: 'Error occured in userController.collectInterest',
+        log: 'Error occured in userController.retrieveCampaignLocationDataQuery',
         status: 400,
         message: { error: err.detail }
       });

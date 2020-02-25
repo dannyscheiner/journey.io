@@ -11,12 +11,14 @@ import Dashboard from './components/Dashboard';
 import Campaign from './components/Campaign';
 import CreateCampaign from './components/CreateCampaign';
 import EditCampaign from './components/EditCampaign';
+import './style.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: '',
+      artistName: '',
       activeCampaigns: []
     };
 
@@ -36,8 +38,8 @@ class App extends Component {
   }
 
   // Create a function called updateId that when it's eventually called, it will take in the artistId and set the artistId key in state to the argument provided.
-  updateId(artistId) {
-    this.setState({ id: artistId });
+  updateId(artistId, artistName) {
+    this.setState({ id: artistId, artistName: artistName });
   }
 
   render() {
@@ -51,7 +53,13 @@ class App extends Component {
             exact
             path={pathStr}
             render={(props) => (
-              <Campaign {...props} artistId={obj.artist_id} campaignId={obj.campaign_id} />
+              <Campaign
+                {...props}
+                artistName={obj.artist}
+                artistId={obj.artist_id}
+                artistName={obj.artist}
+                campaignId={obj.campaign_id}
+              />
             )}
           />
         );
@@ -74,7 +82,13 @@ class App extends Component {
               <Route
                 exact
                 path='/dashboard'
-                render={(props) => <Dashboard {...props} artistId={this.state.id} />}
+                render={(props) => (
+                  <Dashboard
+                    {...props}
+                    artistId={this.state.id}
+                    artistName={this.state.artistName}
+                  />
+                )}
               />
               <Route
                 exact
@@ -105,7 +119,9 @@ class App extends Component {
             <Route
               exact
               path='/dashboard'
-              render={(props) => <Dashboard {...props} artistId={this.state.id} />}
+              render={(props) => (
+                <Dashboard {...props} artistId={this.state.id} artistName={this.state.artistName} />
+              )}
             />
             <Route
               exact

@@ -6,7 +6,7 @@ const artistController = {};
 //////////// QUERIES ///////////////
 const signupQuery =
   'INSERT INTO artist (name, username, password, location, join_date) VALUES ($1, $2, $3, $4, $5) RETURNING id';
-const loginQuery = 'SELECT password, id FROM artist WHERE username=$1';
+const loginQuery = 'SELECT name, password, id FROM artist WHERE username=$1';
 const updateCookie = 'UPDATE artist SET cookie=$1 WHERE id=$2';
 const verifyCookie = 'SELECT cookie FROM artist WHERE id=$1';
 const createCampaignQuery =
@@ -17,8 +17,9 @@ const updateCampaign =
 const getDashboardQuery = 'SELECT * FROM campaign WHERE artist_id=$1 ORDER BY active DESC, id DESC';
 const deactivateCampaignQuery = 'UPDATE campaign SET active=false WHERE id=$1';
 const getCitiesQuery =
-  'SELECT COUNT(id) AS total, DISTINCT location FROM datapoint WHERE campaign_id=$1';
-const getCityCountsQuery = 'SELECT COUNT(id) FROM datapoint WHERE campaign_id=$1 AND location=$2';
+  'SELECT DISTINCT location FROM datapoint WHERE campaign_id=$1';
+const getCityCountsQuery =
+  'SELECT COUNT(id) FROM datapoint WHERE campaign_id=$1 AND location=$2';
 const getLatLongQuery = 'SELECT lat, long FROM datapoint WHERE campaign_id=$1';
 
 // used for query data populating
@@ -56,12 +57,14 @@ artistController.createUser = (req, res, next) => {
 artistController.loginUser = (req, res, next) => {
   // Queries the database for the password associated with the given username
   db.query(loginQuery, [req.body.username])
-    .then((dbPw) => {
+    .then(dbPw => {
+      console.log(dbPw.rows[0]);
       if (dbPw.rows[0].password === req.body.password) {
-        res.locals.userId = dbPw.rows[0].id;
+        res.locals.artistId = dbPw.rows[0].id;
+        res.locals.artistName = dbPw.rows[0].name;
         return next();
       } else {
-        res.status(400).send('Invalid username/password');
+        return res.status(400).send('Invalid username/password');
       }
     })
     .catch((err) => {
@@ -78,8 +81,8 @@ artistController.setCookie = (req, res, next) => {
   // create a random number to randomize the cookie
   const random = Math.floor(Math.random() * 999).toString();
   // ArtistI can be interpreted as ArtistID
-  res.cookie('artistI', res.locals.userId, { httpOnly: true });
-  res.cookie('cookie', random, { httpOnly: true });
+  res.cookie('artistI', res.locals.artistId, { httpOnly: true });
+  res.cookie('cookie', random, { httpOnly: true, overwrite: true });
   db.query(updateCookie, [random, res.locals.userId])
     .then((res) => {
       return next();
@@ -99,7 +102,7 @@ artistController.verifyCookie = (req, res, next) => {
     res.locals.verify = false;
     return next();
   }
-  db.query(verifyCookie, [req.cookies.toDoI]).then((verif) => {
+  db.query(verifyCookie, [req.cookies.artistI]).then(verif => {
     if (verif.rows[0].cookie == req.cookies.cookie) {
       res.locals.verify = true;
       return next();
@@ -156,7 +159,7 @@ artistController.editCampaign = (req, res, next) => {
     })
     .catch((err) => {
       return next({
-        log: 'Error occured in artistController.createCampaign',
+        log: 'Error occured in artistController.editCampaign',
         status: 400,
         message: { err: err.detail }
       });
@@ -186,7 +189,7 @@ artistController.updateCampaign = (req, res, next) => {
     }) // result from query isn't needed when updating
     .catch((err) => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.updateCampaign',
         status: 400,
         message: { error: err.detail }
       });
@@ -201,8 +204,7 @@ artistController.getDashboard = (req, res, next) => {
       res.locals.campaignData = data.rows;
       return next();
     })
-    .catch((err) => {
-      x;
+    .catch(err => {
       return next({
         log: 'Error occured in artistController.getDashboard',
         status: 400,
@@ -221,11 +223,39 @@ artistController.deactivateCampaign = (req, res, next) => {
     })
     .catch((err) => {
       return next({
-        log: 'Error occured in userController.createCampaign',
+        log: 'Error occured in artistController.deactivateCampaign',
         status: 400,
         message: { error: err.detail }
       });
     });
+};
+
+artistController.getCampaignDetails = async (req, res, next) => {
+  try {
+    const cities = await db.query(getCitiesQuery, [req.params.id]);
+    const details = [];
+    let total = 0;
+    for (let i = 0; i < cities.rows.length; i++) {
+      const data = await db.query(getCityCountsQuery, [
+        req.params.id,
+        cities.rows[i].location,
+      ]);
+      total += +data.rows[0].count;
+      details.push({
+        city: cities.rows[i].location,
+        count: +data.rows[0].count,
+      });
+    }
+    details.push({ total: total });
+    res.locals.campaign.details = details;
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error occured in artistController.getCampaignDetails',
+      status: 400,
+      message: { error: err.detail },
+    });
+  }
 };
 
 module.exports = artistController;
