@@ -121,6 +121,7 @@ body {
 .dashboardCard {
   height: 500px;
   text-align: center;
+  margin: 0 20px;
 }
 
 .card-body {
