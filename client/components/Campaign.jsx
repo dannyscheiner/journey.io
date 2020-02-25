@@ -185,6 +185,7 @@ class Campaign extends React.Component {
               city!
             </h2>
           </Card.Title>
+          <br />
           <div className="row">
             <div className="col-8">
               <Map campaignId={this.props.campaignId} />
