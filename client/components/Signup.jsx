@@ -7,7 +7,7 @@ class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signupVerify: false
+      signupVerify: false,
     };
 
     this.createUser = this.createUser.bind(this);
@@ -23,8 +23,8 @@ class Signup extends Component {
         name: e.target.createNameInput.value,
         username: e.target.createUsernameInput.value,
         password: e.target.createPasswordInput.value,
-        location: e.target.createLocationInput.value
-      })
+        location: e.target.createLocationInput.value,
+      }),
     })
       .then(data => data.json())
       .then(res => {
@@ -42,25 +42,30 @@ class Signup extends Component {
     }
     return (
       <Form className="signup" onSubmit={this.createUser}>
-        <Form.Group controlId="createNameInput">
-          <Form.Label>Artist Name</Form.Label>
-          <Form.Control type="text" />
-        </Form.Group>
-        <Form.Group controlId="createUsernameInput">
-          <Form.Label>Username</Form.Label>
-          <Form.Control type="text" />
-        </Form.Group>
-        <Form.Group controlId="createPasswordInput">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Create a password" />
-        </Form.Group>
-        <Form.Group controlId="createLocationInput">
-          <Form.Label>Location</Form.Label>
-          <Form.Control type="text" />
-        </Form.Group>
-        <Button variant="info" type="submit">
-          Sign Up
-        </Button>
+        <h1>Create your account</h1>
+        <div className="signupBox">
+          <Form.Group controlId="createNameInput">
+            <Form.Label>Artist Name</Form.Label>
+            <Form.Control type="text" placeholder="Enter your artist name" />
+          </Form.Group>
+          <Form.Group controlId="createUsernameInput">
+            <Form.Label>Username</Form.Label>
+            <Form.Control type="text" placeholder="Create a username" />
+          </Form.Group>
+          <Form.Group controlId="createPasswordInput">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Create a password" />
+          </Form.Group>
+          <Form.Group controlId="createLocationInput">
+            <Form.Label>Location</Form.Label>
+            <Form.Control type="text" placeholder="i.e. Los Angeles, CA" />
+          </Form.Group>
+          <div className="buttons">
+            <Button variant="info" type="submit">
+              Sign Up
+            </Button>
+          </div>
+        </div>
       </Form>
     );
   }
