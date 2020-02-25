@@ -8,8 +8,9 @@ import Details from './Details';
 
 // Props are being passed down from the Dashboard Component
 // name and id relate to campaign.id and campaign.name
-// onClick, t
 const ActiveCard = ({
+  // Below are props being passed down from the Dashboard Component using object deconstruction
+  // name and id relate to campaign.id and campaign.name
   id,
   name,
   artistName,
@@ -22,11 +23,13 @@ const ActiveCard = ({
   //card display
   console.log('active card ', id);
   return (
+    // look at React Bootstrap to further understand the card component
     <Card className='dashboardCard' style={{ width: '25rem' }}>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className='activeCard'>Active</Card.Subtitle>
         <Card.Subtitle>
+          {/* window.location.origin means the path that the browser is at. journey.io/ for example. */}
           Link:
           <a href={window.location.origin + '/' + artistName + '/' + name}>
             {window.location.origin + '/' + artistName + '/' + name}
@@ -35,6 +38,7 @@ const ActiveCard = ({
         <div className='buttons'>
           <Button
             type='submit'
+            // in bootstrap, variant being set to "danger" turns it red
             variant='danger'
             onClick={() => {
               deactivate(id);
