@@ -27,6 +27,7 @@ app.get('/*', (req, res) => {
 //  catch-all route handler for any requests to an unknown route
 app.use((req, res) => res.sendStatus(404));
 
+// general route handler for all unknown errors
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const defaultErr = {

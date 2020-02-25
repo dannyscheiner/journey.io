@@ -23,6 +23,7 @@ class App extends Component {
     this.updateId = this.updateId.bind(this);
   }
 
+  // On App mount, get the campaign data for each endpoint (active campaigns only) and save it to the variable in state called activeCampaigns
   componentDidMount() {
     fetch('/user/getCampaigns')
       .then((data) => data.json())
@@ -34,6 +35,7 @@ class App extends Component {
       });
   }
 
+  // Create a function called updateId that when it's eventually called, it will take in the artistId and set the artistId key in state to the argument provided.
   updateId(artistId) {
     this.setState({ id: artistId });
   }

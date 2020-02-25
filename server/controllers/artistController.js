@@ -14,13 +14,11 @@ const createCampaignQuery =
 const retrieveCampaign = 'SELECT * FROM campaign WHERE id = $1 AND active = true';
 const updateCampaign =
   'UPDATE campaign SET name = $2, video = $3, facebook = $4, twitter = $5, instagram = $6, youtube = $7, soundcloud = $8, tiktok = $9, spotify = $10, bio = $11 WHERE id = $1 AND active = true';
-const getDashboardQuery =
-  'SELECT * FROM campaign WHERE artist_id=$1 ORDER BY active DESC, id DESC';
+const getDashboardQuery = 'SELECT * FROM campaign WHERE artist_id=$1 ORDER BY active DESC, id DESC';
 const deactivateCampaignQuery = 'UPDATE campaign SET active=false WHERE id=$1';
 const getCitiesQuery =
   'SELECT COUNT(id) AS total, DISTINCT location FROM datapoint WHERE campaign_id=$1';
-const getCityCountsQuery =
-  'SELECT COUNT(id) FROM datapoint WHERE campaign_id=$1 AND location=$2';
+const getCityCountsQuery = 'SELECT COUNT(id) FROM datapoint WHERE campaign_id=$1 AND location=$2';
 const getLatLongQuery = 'SELECT lat, long FROM datapoint WHERE campaign_id=$1';
 
 // used for query data populating
@@ -31,13 +29,15 @@ const today = moment(new Date())
   .slice(0, 10);
 
 /////////// CONTROLLERS //////////////////
+// Creates a user in the database
 artistController.createUser = (req, res, next) => {
+  // signupQuery inserts the artist signup information into the database
   db.query(signupQuery, [
     req.body.name,
     req.body.username,
     req.body.password,
     req.body.location,
-    today,
+    today
   ])
     .then((data) => {
       res.locals.userId = data.rows[0].id;
@@ -47,12 +47,14 @@ artistController.createUser = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.createUser',
         status: 400,
-        message: { err: err },
+        message: { err: err }
       });
     });
 };
 
+// Attempts to log the user in by querying the database for the user's password, and logging them in dependent upon the submitted password being equal to the password associated with the submitted username in the database
 artistController.loginUser = (req, res, next) => {
+  // Queries the database for the password associated with the given username
   db.query(loginQuery, [req.body.username])
     .then((dbPw) => {
       if (dbPw.rows[0].password === req.body.password) {
@@ -66,13 +68,16 @@ artistController.loginUser = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.loginUser',
         status: 400,
-        message: { err: err },
+        message: { err: err }
       });
     });
 };
 
+// Sets the cookie
 artistController.setCookie = (req, res, next) => {
+  // create a random number to randomize the cookie
   const random = Math.floor(Math.random() * 999).toString();
+  // ArtistI can be interpreted as ArtistID
   res.cookie('artistI', res.locals.userId, { httpOnly: true });
   res.cookie('cookie', random, { httpOnly: true });
   db.query(updateCookie, [random, res.locals.userId])
@@ -83,13 +88,14 @@ artistController.setCookie = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.setCookie',
         status: 400,
-        message: { err: err },
+        message: { err: err }
       });
     });
 };
 
+// Verifies the cookie
 artistController.verifyCookie = (req, res, next) => {
-  if (!req.cookies.toDoI || !req.cookies.cookie) {
+  if (!req.cookies.artistI || !req.cookies.cookie) {
     res.locals.verify = false;
     return next();
   }
@@ -104,7 +110,9 @@ artistController.verifyCookie = (req, res, next) => {
   });
 };
 
+// Creates an artist campaign in the database
 artistController.createCampaign = (req, res, next) => {
+  // Sets campaign params to input into the database
   const params = [
     req.body.artist_id, // passed in from state
     req.body.name,
@@ -117,9 +125,10 @@ artistController.createCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio,
+    req.body.bio
   ];
 
+  // Query inserts the campaign data into the database
   db.query(createCampaignQuery, params)
     .then((result) => {
       console.log('Campaign created successfully');
@@ -129,7 +138,7 @@ artistController.createCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { error: err.detail },
+        message: { error: err.detail }
       });
     });
 };
@@ -149,7 +158,7 @@ artistController.editCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.createCampaign',
         status: 400,
-        message: { err: err.detail },
+        message: { err: err.detail }
       });
     });
 };
@@ -169,7 +178,7 @@ artistController.updateCampaign = (req, res, next) => {
     req.body.soundcloud,
     req.body.tiktok,
     req.body.spotify,
-    req.body.bio,
+    req.body.bio
   ];
   db.query(updateCampaign, params)
     .then((result) => {
@@ -179,11 +188,12 @@ artistController.updateCampaign = (req, res, next) => {
       return next({
         log: 'Error occured in userController.createCampaign',
         status: 400,
-        message: { error: err.detail },
+        message: { error: err.detail }
       });
     });
 };
 
+// Retrieves the dashboard data from the database
 artistController.getDashboard = (req, res, next) => {
   const id = req.cookies.artistI;
   db.query(getDashboardQuery, [id])
@@ -196,23 +206,24 @@ artistController.getDashboard = (req, res, next) => {
       return next({
         log: 'Error occured in artistController.getDashboard',
         status: 400,
-        message: { err: err },
+        message: { err: err }
       });
     });
 };
 
 // submit updated inputs from edit campaign to update campaign db
 
+// Deactivates the dashboard by switching the active column for the given campaign id to false
 artistController.deactivateCampaign = (req, res, next) => {
   db.query(deactivateCampaignQuery, [req.body.id])
-    .then(result => {
+    .then((result) => {
       return next();
     })
-    .catch(err => {
+    .catch((err) => {
       return next({
         log: 'Error occured in userController.createCampaign',
         status: 400,
-        message: { error: err.detail },
+        message: { error: err.detail }
       });
     });
 };

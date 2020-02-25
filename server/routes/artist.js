@@ -3,17 +3,17 @@ const express = require('express');
 const router = express.Router();
 const artistController = require('../controllers/artistController');
 
-// api for artist to send login
+// api for artist to login
 router.post('/login', artistController.loginUser, artistController.setCookie, (req, res) => {
   return res.status(200).json({ id: res.locals.userId });
 });
 
-// api for artist to signup
+// api for artist to signup, as well as set the cookie for persistent login
 router.post('/signup', artistController.createUser, artistController.setCookie, (req, res) => {
   return res.status(200).json({ id: res.locals.userId });
 });
 
-// api to access the artist's personal dashboard after sign-in
+// api to access the artist's personal dashboard after login
 router.get('/dashboard', artistController.getDashboard, (req, res) => {
   return res.status(200).json({ campaigns: res.locals.campaignData });
 });
@@ -33,6 +33,7 @@ router.post('/updateCampaign', artistController.updateCampaign, (req, res) => {
   return res.status(200).json('Successful Campaign Update');
 });
 
+// api for artist to deactivate their campaign
 router.patch('/deactivatecampaign', artistController.deactivateCampaign, (req, res) => {
   return res.status(200).json('Campaign successfully deactivated');
 });
