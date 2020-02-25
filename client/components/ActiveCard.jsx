@@ -15,6 +15,7 @@ const ActiveCard = ({
   deactivate,
 }) => {
   //card display
+  console.log('active card ', id);
   return (
     <Card style={{ width: '25rem' }}>
       <Card.Body>

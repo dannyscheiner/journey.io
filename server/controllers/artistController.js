@@ -56,12 +56,13 @@ artistController.createUser = (req, res, next) => {
 artistController.loginUser = (req, res, next) => {
   db.query(loginQuery, [req.body.username])
     .then(dbPw => {
+      console.log(dbPw.rows[0]);
       if (dbPw.rows[0].password === req.body.password) {
         res.locals.artistId = dbPw.rows[0].id;
         res.locals.artistName = dbPw.rows[0].name;
         return next();
       } else {
-        res.status(400).send('Invalid username/password');
+        return res.status(400).send('Invalid username/password');
       }
     })
     .catch(err => {

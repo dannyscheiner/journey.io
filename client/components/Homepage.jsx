@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Card, Button, Navbar } from 'react-bootstrap';
-import Login from './Login';
-import Signup from './Signup';
 
 class Homepage extends Component {
   constructor(props) {
@@ -20,7 +18,7 @@ class Homepage extends Component {
         }}
       >
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">journey</Navbar.Brand>
+          <Navbar.Brand href="#home">journey.io</Navbar.Brand>
         </Navbar>
         {/* LOG IN CARD */}
         <div

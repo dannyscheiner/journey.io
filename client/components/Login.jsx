@@ -29,6 +29,7 @@ class Login extends Component {
       .then(data => data.json())
       .then(res => {
         this.props.updateState(res.id, res.name);
+        console.log(res.id, res.name);
         this.setState({ loginVerify: true, loginError: '' });
       })
       .catch(err => {
@@ -44,24 +45,27 @@ class Login extends Component {
     }
     return (
       <Form className="login" onSubmit={this.sendLogin}>
-        <Form.Group controlId="loginUsernameInput">
-          <Form.Label>Username</Form.Label>
-          <Form.Control type="text" />
-        </Form.Group>
-        <Form.Group controlId="loginPasswordInput">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" />
-        </Form.Group>
-        <p>{this.state.loginError}</p>
-        <div className="buttons">
-          <Button type="submit" variant="info">
-            Login
-          </Button>
-          <Button type="submit" variant="outline-info">
-            <Link className="signupLink" to={'/signup'}>
-              Sign Up
-            </Link>
-          </Button>
+        <h1>Login to get started</h1>
+        <div className="loginBox">
+          <Form.Group controlId="loginUsernameInput">
+            <Form.Label>Username</Form.Label>
+            <Form.Control type="text" />
+          </Form.Group>
+          <Form.Group controlId="loginPasswordInput">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" />
+          </Form.Group>
+          <p>{this.state.loginError}</p>
+          <div className="buttons">
+            <Button type="submit" variant="info">
+              Login
+            </Button>
+            <Button type="submit" variant="outline-info">
+              <Link className="signupLink" to={'/signup'}>
+                Sign Up
+              </Link>
+            </Button>
+          </div>
         </div>
       </Form>
     );
