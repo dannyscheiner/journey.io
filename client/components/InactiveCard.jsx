@@ -11,7 +11,10 @@ const InactiveCard = ({
   toggleDetailsModal,
 }) => {
   return (
-    <Card style={{ width: '25rem', backgroundColor: '#CACACA' }}>
+    <Card
+      className="dashboardCard"
+      style={{ width: '25rem', backgroundColor: '#CACACA' }}
+    >
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className="inactiveCard">Inactive</Card.Subtitle>

@@ -32,7 +32,7 @@ class Details extends Component {
       for (let i = 0; i < details.length - 1; i++) {
         metrics.push(
           <p key={i}>
-            {details[i].city}: {(details[i].count / total) * 100}%
+            {details[i].city}: {((details[i].count / total) * 100).toFixed(2)}%
           </p>,
         );
       }

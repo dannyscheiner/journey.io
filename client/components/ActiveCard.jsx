@@ -17,7 +17,7 @@ const ActiveCard = ({
   //card display
   console.log('active card ', id);
   return (
-    <Card style={{ width: '25rem' }}>
+    <Card className="dashboardCard" style={{ width: '25rem' }}>
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className="activeCard">Active</Card.Subtitle>
